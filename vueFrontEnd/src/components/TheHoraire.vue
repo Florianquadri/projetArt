@@ -30,8 +30,8 @@ const tabClasses = computed(() => {
         <h2>Voici les horaires des prochains cours</h2>
 
         <table class="table">
-            <thead class="enTeteHoraire">
-                <tr classe=ligne>
+            <thead>
+                <tr class="enTeteHoraire">
                     <th class="thead">Classe</th>
                     <th class="thead">Cours</th>
                     <th class="thead">Salle</th>
@@ -60,6 +60,7 @@ const tabClasses = computed(() => {
     flex-direction: row;
     justify-content: space-between;
     background-color: #B7FCF7;
+
 
 }
 
