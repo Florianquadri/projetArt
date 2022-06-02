@@ -59,7 +59,7 @@ const tabClasses = computed(() => {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    background-color: #B7FCF7;
+    background-color:#60E1E0;
 
 
 }
@@ -69,7 +69,7 @@ const tabClasses = computed(() => {
 }
 
 .bodyTable {
-    background-color: #FFEBCD;
+    background-color: #F7EDDA;
 }
 
 .containerHoraire {

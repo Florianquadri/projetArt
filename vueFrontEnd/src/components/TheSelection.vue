@@ -11,7 +11,7 @@ const props = defineProps({
 </script>
 
 <template>
-    <h2>Sélection cours / période de temps / que voir exams</h2>
+<!--     <h2>Sélection cours / période de temps / que voir exams</h2> -->
     <label for="classes-select">Choisis ta classe</label>
     <select name="pets" id="classes-select">
         <option value="">--Choisis ta classe--</option>

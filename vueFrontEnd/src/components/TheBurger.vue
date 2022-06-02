@@ -1,32 +1,105 @@
 <script setup>
-import { ref, computed, watchEffect } from 'vue';
-const isMenuVisible = ref(false);
+import { computed, onMounted, onUnmounted, ref, watchEffect } from "vue";
+import aButtonChecked from './aButtonChecked.vue';
+import { coursChecked, testChecked, eventChecked, devoirChecked } from "../state.js";
 
-function toggleMenu(){
+const isMenuVisible = ref(false);
+const vueMobile = ref(false);
+const isButtonClicked = ref(false);
+/* const isClicked = ref(false); */
+
+//capter qu'on est sur mobile pour afficher "menu" Dans menu burger popant - gauche
+
+let windowWidth = ref(window.innerWidth);
+const onWidthChange = () => windowWidth.value = window.innerWidth;
+
+onMounted(() => window.addEventListener('resize', onWidthChange))
+onUnmounted(() => window.removeEventListener('resize', onWidthChange))
+
+const device = computed(() => {
+    if (windowWidth.value <= 768) return 'smartphone'
+    if (windowWidth.value > 768 && windowWidth.value < 992) return 'tablette'
+    if (windowWidth.value > 993) return 'ordi'
+    return null; // This is an unreachable line, simply to keep eslint happy.
+})
+
+const width = computed(() => windowWidth.value)
+
+
+function toggleMenu() {
     isMenuVisible.value = !isMenuVisible.value;
     console.log("hello");
 }
 
-function fermeMenu(){
+function fermeMenu() {
     isMenuVisible.value = false;
     console.log("hello");
 }
+
+/* const valueClicked = ref({ "cours" : false, "test" : false, "event": false, "devoir": false }); */
+//il faut une variable qui capte quelles cases sont cochées ou non
+//chaque bouton doit être présent dans le tableau quand isClicked is true, sinon pas dans tableau
 
 </script>
 
 <template>
     <nav class="navbar">
         <ul class="nav-menu" :class="isMenuVisible ? 'active' : ''">
-<!--         //v-for des éléments reçu et créer un composant pour li et envoyer les détails -->
-            <li class="nav-item">
-                <a href="#" class="nav-link" @click="fermeMenu">Home</a>
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link" @click="fermeMenu">About</a>
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link" @click="fermeMenu">Contact</a>
-            </li>
+            <!--         //v-for des éléments reçu et créer un composant pour li et envoyer les détails -->
+            <div class="nav-division">
+                <li class="nav-item">
+                    <a class="nav-link-category" :class="device" v-if="device == 'smartphone'">Menu</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link nav-link-button" :class="device" @click="fermeMenu">Planning</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link nav-link-button" :class="device" @click="fermeMenu">Mois</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link nav-link-button" :class="device" @click="fermeMenu">Semaine</a>
+                </li>
+            </div>
+            <div class="nav-division">
+                <li class="nav-item">
+                    <a class="nav-link-category" :class="device" v-if="device == 'smartphone'">Affichage</a>
+                </li>
+                <div class="nav-item-flex">
+                    <li class="nav-item">
+                        <a :class="device">Cours</a>
+                    </li>
+                    <!--                     {{ coursChecked }} -->
+                    <a-button-checked baseColor="white" hoverColor="grey" selectedColor="black" value="cours"
+                        @isClicked="coursChecked = $event"></a-button-checked>
+                </div>
+                <div class="nav-item-flex">
+                    <li class="nav-item">
+                        <a :class="device">Test</a>
+                    </li>
+                    <!--                     {{ testChecked }} -->
+                    <a-button-checked baseColor="white" hoverColor="grey" selectedColor="black" value="test"
+                        @isClicked="testChecked = $event">
+                    </a-button-checked>
+                </div>
+                <div class="nav-item-flex">
+                    <li class="nav-item">
+                        <a :class="device">Event</a>
+                    </li>
+                    <!--                     {{ eventChecked }} -->
+                    <a-button-checked baseColor="white" hoverColor="grey" selectedColor="black" value="event"
+                        @isClicked="eventChecked = $event">
+                    </a-button-checked>
+                </div>
+                <div class="nav-item-flex">
+                    <li class="nav-item">
+                        <a :class="device">Devoir</a>
+                    </li>
+                    <!--                     {{ devoirChecked }} -->
+                    <a-button-checked baseColor="white" hoverColor="grey" selectedColor="black" value="devoir"
+                        @isClicked="devoirChecked = $event">
+                    </a-button-checked>
+                </div>
+            </div>
         </ul>
         <div class="hamburger" :class="isMenuVisible ? 'active' : ''" @click="toggleMenu">
             <span class="bar"></span>
@@ -35,19 +108,15 @@ function fermeMenu(){
         </div>
 
     </nav>
+    <!--     {{ device }} -->
 </template>
 
-
-
 <style scoped>
+/* //ajouter style css dynamique pour viewport smartphone ou ordi */
 * {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
-}
-
-header {
-    background-color: black;
 }
 
 li {
@@ -55,7 +124,12 @@ li {
 }
 
 a {
-    color: white;
+    color: black;
+    text-decoration: none;
+}
+
+a.smartphone {
+    color: #646259;
     text-decoration: none;
 }
 
@@ -78,7 +152,12 @@ a {
 }
 
 .nav-link:hover {
-    color: dodgerblue;
+    color: white;
+}
+
+.nav-link-category {
+    font-weight: bold;
+    font-size: 1.5rem;
 }
 
 .hamburger {
@@ -93,47 +172,112 @@ a {
     margin: 5px auto;
     -webkit-transition: all 0.3s ease-in-out;
     transition: all 0.3s ease-in-out;
-    background-color: white;
+    background-color: #60E1E0;
 
 }
 
-@media(max-width:768px) {
-    .hamburger {
-        display: block;
-    }
+.hamburger {
+    display: block;
+}
 
-    .hamburger.active .bar:nth-child(2) {
-        opacity: 0;
-    }
+.hamburger.active .bar:nth-child(2) {
+    opacity: 0;
+}
 
-    .hamburger.active .bar:nth-child(1) {
-        transform: translateY(8px) rotate(45deg);
-    }
+.hamburger.active .bar:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+}
 
-    .hamburger.active .bar:nth-child(3) {
-        transform: translateY(-8px) rotate(-45deg);
-    }
+.hamburger.active .bar:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+}
 
+.nav-menu {
+    position: fixed;
+    left: -100%;
+    top: 70px;
+    height: 100%;
+    gap: 0;
+    flex-direction: column;
+    justify-content: flex-start;
+    background-color: #60E1E0;
+    width: 75%;
+    opacity: 1;
+    text-align: left;
+    padding-left: 30px;
+    padding-right: 30px;
+    transition: 0.3s;
+}
+
+.nav-item {
+    margin: 16px 0;
+}
+
+.nav-menu.active {
+    left: 0;
+    justify-content: flex-start;
+}
+
+.nav-item-flex {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.nav-link {
+    background-color: transparent;
+    border-radius: 50px;
+    padding: 5px 10px;
+}
+
+.nav-link:hover {
+    background-color: black;
+    padding: 5px 10px;
+}
+
+@media(min-width:769px) {
     .nav-menu {
         position: fixed;
-        left: -100%;
+        left: 0px;
         top: 70px;
+        height: 100%;
+        width: 15%;
         gap: 0;
         flex-direction: column;
-        background-color: #262626;
-        width: 100%;
-        opacity:0.7;
-        text-align: center;
+        justify-content: flex-start;
+        background-color: #60E1E0;
+        opacity: 1;
+        text-align: left;
+        padding-left: 15px;
+        padding-right: 15px;
         transition: 0.3s;
     }
 
-    .nav-item {
-        margin: 16px 0;
+    /*     .nav-menu.active {
+        left: 100;
+        justify-content: flex-start;
+        width: 50%;
+    } */
+
+    @media(min-width:993) {
+        /*     .nav-menu {
+        width: 10%;
+        gap: 0;
+        flex-direction: column;
+        justify-content: flex-start;
+        background-color: #60E1E0;
+        opacity: 1;
+        text-align: left;
+        padding-left: 15px;
+        padding-right: 15px;
+        transition: 0.3s;
+    } */
     }
 
-    .nav-menu.active {
-        left: 0;
+    .hamburger {
+        display: none;
+        transition: 0.3s;
     }
-
 }
 </style>

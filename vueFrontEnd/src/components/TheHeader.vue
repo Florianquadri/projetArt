@@ -1,12 +1,13 @@
 <script setup>
 import { ref, computed, watchEffect } from 'vue';
 import TheBurger from './TheBurger.vue';
-
+import TheProfile from './TheProfile.vue';
 </script>
 
 <template>
     <div class="container_header">
 <the-burger></the-burger>
+<the-profile></the-profile>
     </div>
 </template>
 
