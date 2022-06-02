@@ -16,6 +16,7 @@ import TheProfile from './TheProfile.vue';
 <style scoped>
 .container_header {
 width:100%;
+    min-height: 70px;
 position: fixed;
 top:0;
     display: flex;

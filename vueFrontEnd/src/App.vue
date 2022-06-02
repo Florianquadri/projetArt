@@ -14,6 +14,7 @@ import 'https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;700
 
 //ira dans section affichage
 import { coursChecked, testChecked, eventChecked, devoirChecked } from "./state.js";
+import { MDCRipple } from '@material/ripple';
 watchEffect(() => {
     affichageSelectionne(coursChecked.value, testChecked.value, eventChecked.value, devoirChecked.value);
 })
@@ -33,11 +34,16 @@ function affichageSelectionne(cours, test, event, devoir) {
     if (devoir) {
         console.log("les devoirs");
     }
-
 }
 </script>
 
 <template>
+    @use "@material/fab";
+    @include fab.core-styles;
+
+    <head>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    </head>
 
     <div class="app">
         <the-header></the-header>
@@ -45,7 +51,6 @@ function affichageSelectionne(cours, test, event, devoir) {
             <the-connexion></the-connexion>
             <the-menu-add-task></the-menu-add-task>
             <h1>AgendA</h1>
-
             <!-- <the-selection></the-selection> -->
             <the-horaire></the-horaire>
 
