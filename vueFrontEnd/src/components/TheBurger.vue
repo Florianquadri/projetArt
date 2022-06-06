@@ -2,10 +2,14 @@
 import { computed, onMounted, onUnmounted, ref, watchEffect } from "vue";
 import aButtonChecked from './aButtonChecked.vue';
 import { coursChecked, testChecked, eventChecked, devoirChecked } from "../state.js";
+import { page } from "../state.js";
 
 const isMenuVisible = ref(false);
 const vueMobile = ref(false);
 const isButtonClicked = ref(false);
+const pageMaj = computed(() => {
+    return page.value.toUpperCase();
+})
 /* const isClicked = ref(false); */
 
 //capter qu'on est sur mobile pour afficher "menu" Dans menu burger popant - gauche
@@ -36,6 +40,11 @@ function fermeMenu() {
     console.log("hello");
 }
 
+function redirigeSurPage(pageEnvoyee){
+page.value = pageEnvoyee;
+    console.log(pageEnvoyee);
+}
+
 /* const valueClicked = ref({ "cours" : false, "test" : false, "event": false, "devoir": false }); */
 //il faut une variable qui capte quelles cases sont cochées ou non
 //chaque bouton doit être présent dans le tableau quand isClicked is true, sinon pas dans tableau
@@ -45,19 +54,20 @@ function fermeMenu() {
 <template>
     <nav class="navbar">
         <ul class="nav-menu" :class="isMenuVisible ? 'active' : ''">
+ <!--        <span class="abc">{{page}}</span> -->
             <!--         //v-for des éléments reçu et créer un composant pour li et envoyer les détails -->
             <div class="nav-division">
                 <li class="nav-item">
                     <a class="nav-link-category" :class="device" v-if="device == 'smartphone'">Menu</a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link nav-link-button" :class="device" @click="fermeMenu">Planning</a>
+                    <a href="#" class="nav-link nav-link-button" :class="device" @click="fermeMenu(); redirigeSurPage('planning');">Planning</a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link nav-link-button" :class="device" @click="fermeMenu">Mois</a>
+                    <a href="#" class="nav-link nav-link-button" :class="device" @click="fermeMenu(); redirigeSurPage('mois');">Mois</a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link nav-link-button" :class="device" @click="fermeMenu">Semaine</a>
+                    <a href="#" class="nav-link nav-link-button" :class="device" @click="fermeMenu(); redirigeSurPage('semaine');">Semaine</a>
                 </li>
             </div>
             <div class="nav-division">
@@ -69,7 +79,8 @@ function fermeMenu() {
                         <a :class="device">Cours</a>
                     </li>
                     <!--                     {{ coursChecked }} -->
-                    <a-button-checked baseColor="white" hoverColor="grey" selectedColor="black" value="cours"
+                    <a-button-checked baseColor="transparent" hoverColor="grey" selectedColor="#84F4BF"
+                        baseBorderColor="#84F4BF" selectedBorderColor="#84F4BF" value="cours"
                         @isClicked="coursChecked = $event"></a-button-checked>
                 </div>
                 <div class="nav-item-flex">
@@ -77,7 +88,8 @@ function fermeMenu() {
                         <a :class="device">Test</a>
                     </li>
                     <!--                     {{ testChecked }} -->
-                    <a-button-checked baseColor="white" hoverColor="grey" selectedColor="black" value="test"
+                    <a-button-checked baseColor="transparent" hoverColor="grey" selectedColor="#F94040"
+                        baseBorderColor="#F94040" selectedBorderColor="#F94040" value="test"
                         @isClicked="testChecked = $event">
                     </a-button-checked>
                 </div>
@@ -86,7 +98,8 @@ function fermeMenu() {
                         <a :class="device">Event</a>
                     </li>
                     <!--                     {{ eventChecked }} -->
-                    <a-button-checked baseColor="white" hoverColor="grey" selectedColor="black" value="event"
+                    <a-button-checked baseColor="transparent" hoverColor="grey" selectedColor="#FFE438"
+                        baseBorderColor="#FFE438" selectedBorderColor="#FFE438" value="event"
                         @isClicked="eventChecked = $event">
                     </a-button-checked>
                 </div>
@@ -95,7 +108,8 @@ function fermeMenu() {
                         <a :class="device">Devoir</a>
                     </li>
                     <!--                     {{ devoirChecked }} -->
-                    <a-button-checked baseColor="white" hoverColor="grey" selectedColor="black" value="devoir"
+                    <a-button-checked baseColor="transparent" hoverColor="grey" selectedColor="#1D4EFF"
+                        baseBorderColor="#1D4EFF" selectedBorderColor="#1D4EFF" value="devoir"
                         @isClicked="devoirChecked = $event">
                     </a-button-checked>
                 </div>
@@ -106,6 +120,7 @@ function fermeMenu() {
             <span class="bar"></span>
             <span class="bar"></span>
         </div>
+        <div v-if="device == 'smartphone'" class="nameSection">{{pageMaj}}</div>
 
     </nav>
     <!--     {{ device }} -->
@@ -124,14 +139,14 @@ li {
 }
 
 a {
-    color: black;
+    color: white;
     text-decoration: none;
 }
 
-a.smartphone {
-    color: #646259;
+/* a.smartphone {
+    color: white;
     text-decoration: none;
-}
+} */
 
 .navbar {
     min-height: 70px;
@@ -172,8 +187,12 @@ a.smartphone {
     margin: 5px auto;
     -webkit-transition: all 0.3s ease-in-out;
     transition: all 0.3s ease-in-out;
-    background-color: #60E1E0;
+    background-color: #E7F0FF;
 
+}
+
+.abc{
+    color:white;
 }
 
 .hamburger {
@@ -195,12 +214,12 @@ a.smartphone {
 .nav-menu {
     position: fixed;
     left: -100%;
-    top: 70px;
+    top: 71px;
     height: 100%;
     gap: 0;
     flex-direction: column;
     justify-content: flex-start;
-    background-color: #60E1E0;
+    background-color: #262626;
     width: 75%;
     opacity: 1;
     text-align: left;
@@ -216,6 +235,7 @@ a.smartphone {
 .nav-menu.active {
     left: 0;
     justify-content: flex-start;
+    border-top: 1px solid #E7F0FF;
 }
 
 .nav-item-flex {
@@ -246,7 +266,7 @@ a.smartphone {
         gap: 0;
         flex-direction: column;
         justify-content: flex-start;
-        background-color: #60E1E0;
+        background-color: #262626;
         opacity: 1;
         text-align: left;
         padding-left: 15px;
@@ -279,5 +299,10 @@ a.smartphone {
         display: none;
         transition: 0.3s;
     }
+}
+
+.nameSection{
+    color:white;
+    margin-left:10px;
 }
 </style>

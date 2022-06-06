@@ -38,9 +38,9 @@ function affichageSelectionne(cours, test, event, devoir) {
 </script>
 
 <template>
-    @use "@material/fab";
+<!--     @use "@material/fab";
     @include fab.core-styles;
-
+ -->
     <head>
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     </head>
@@ -50,7 +50,7 @@ function affichageSelectionne(cours, test, event, devoir) {
         <div class="body">
             <the-connexion></the-connexion>
             <the-menu-add-task></the-menu-add-task>
-            <h1>AgendA</h1>
+
             <!-- <the-selection></the-selection> -->
             <the-horaire></the-horaire>
 
@@ -70,7 +70,7 @@ function affichageSelectionne(cours, test, event, devoir) {
     display: flex;
     flex-direction: column;
     margin-top: 70px;
-    background-color: #F7EDDA;
+    background-color: black;
     padding: 10px;
 }
 
@@ -87,4 +87,6 @@ function affichageSelectionne(cours, test, event, devoir) {
   padding:10px;
 } */
 }
+
+h1{color:white;}
 </style>

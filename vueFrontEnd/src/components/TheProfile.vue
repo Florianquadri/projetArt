@@ -19,14 +19,14 @@ const firstLetterName = ref('F');
 .profil {
     display: flex;
     align-items: center;
-    padding-right: 20px;
+    padding:10px 25px;
 
 }
 
 .insideProfil {
     width: 40px;
     height: 40px;
-    border: 1px solid #60E1E0;
+    border: 1px solid #E7F0FF;
     border-radius: 50px;
     display: flex;
     flex-direction: row;
@@ -35,6 +35,6 @@ const firstLetterName = ref('F');
 }
 
 .nom {
-    color: #60E1E0;
+    color: #E7F0FF;
 }
 </style>

@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed, watchEffect } from 'vue';
 import aButtonMenuTask from './aButtonMenuTask.vue';
+import {user} from '../state.js';
 
 const mainButtonTaskPushed = ref(false);
 
@@ -28,16 +29,16 @@ function fermeTaches() {
         </div>
         <div class="containerAllTasks" v-if="mainButtonTaskPushed">
             <!--         <a-button-menu-task icon="add" @click="toggleTaches"></a-button-menu-task> -->
-            <div class="label_icon" v-if="mainButtonTaskPushed">
+            <div class="label_icon">
                 <span class="text">Evenement</span>
                 <a-button-menu-task icon="event"></a-button-menu-task>
             </div>
-            <div class="label_icon" v-if="mainButtonTaskPushed">
-                <span class="text">Classe</span>
+            <div class="label_icon" v-if="user =='student'">
+                <span class="text">M49-1</span>
                 <a-button-menu-task icon="accessibility"></a-button-menu-task>
             </div>
 
-            <div class="label_icon" v-if="mainButtonTaskPushed">
+            <div class="label_icon" v-if="user =='teacher'">
                 <span class="text">Test</span>
                 <a-button-menu-task icon="event_note"></a-button-menu-task>
             </div>
@@ -72,7 +73,7 @@ function fermeTaches() {
 
 .containsTask.active {
     transition: 0.7s ease;
-    background-color: #60E1E0;
+    background-color: #262626;
     border-radius: 10px;
     padding: 10px;
 }
@@ -91,11 +92,11 @@ function fermeTaches() {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #262626;
+    background-color: #6BA2FF;
 }
 
 .add:hover {
-    background-color: #60E1E0;
+/*     background-color: #60E1E0; */
     ;
 }
 
@@ -108,11 +109,12 @@ function fermeTaches() {
 }
 
 button.pushed {
-    background-color: #60E1E0;
+    background-color: #FFFFFF;
 }
 
 span.pushed {
-    color: #262626;
+    color: #6BA2FF;
+    border:1px solid white
 }
 
 div.label_icon {
@@ -128,7 +130,7 @@ div.label_icon {
 }
 
 .containerAllTasks {
-    /*     background-color: #60E1E0; */
+         background-color: #262626; 
     border-radius: 10px;
     padding-left: 10px;
     padding-top: 10px;
@@ -139,5 +141,6 @@ span.text {
     flex-grow: 2;
     text-align: right;
     margin-right: 10px;
+    color:white;
 }
 </style>

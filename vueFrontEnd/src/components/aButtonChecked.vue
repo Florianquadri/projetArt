@@ -17,6 +17,16 @@ const props = defineProps({
         required: false,
         default: "black"
     },
+        baseBorderColor: {
+        type: String,
+        required: false,
+        default: "black"
+    },
+    selectedBorderColor: {
+        type: String,
+        required: false,
+        default: "white"
+    },
     hoverColor: {
         type: String,
         required: false,
@@ -57,6 +67,7 @@ button {
     border-radius: 5px;
     border: 1px solid grey;
     cursor: pointer;
+    border : 1px solid  v-bind('props.baseBorderColor');
 }
 
 button:hover {
@@ -65,5 +76,6 @@ button:hover {
 
 button.selected {
     background-color: v-bind('props.selectedColor');
+            border : 1px solid  v-bind('props.selectedBorderColor');
 }
 </style>
