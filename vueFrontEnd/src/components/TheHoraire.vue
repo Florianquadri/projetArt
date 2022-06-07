@@ -9,6 +9,8 @@ import { page } from "../state.js";
 import { myClass } from "../state.js";
 import { user } from "../state.js";
 import TheNextEvent from './TheNextEvent.vue';
+import "/node_modules/vue-simple-calendar/dist/style.css";
+import { CalendarView, CalendarViewHeader } from "vue-simple-calendar"
 
 const { data: courses } = useFetch(apiHoraireBase);
 
@@ -26,8 +28,8 @@ const tabClasses = computed(() => {
 });
 
 const datasForClassSelected = computed(() => {
-        if (courses.value?.length > 0) {
-return courses.value.filter(classe => classe.class == myClass.value);
+    if (courses.value?.length > 0) {
+        return courses.value.filter(classe => classe.class == myClass.value);
     } else {
         return [];
     }
@@ -35,12 +37,13 @@ return courses.value.filter(classe => classe.class == myClass.value);
 )
 
 const datasForClassSelectedOrderAsc = computed(() => {
-    return datasForClassSelected.value.sort((a, b) => { return new Date(a.start) - new Date(b.start);});
+    return datasForClassSelected.value.sort((a, b) => { return new Date(a.start) - new Date(b.start); });
 })
 
-/* const nextEvent = computed(() => {
-    return datasForClassSelected[0];
-}) */
+const showDate = ref(new Date());
+function setShowDate(d) {
+    showDate.value = d;
+}
 
 //penser à récupérer également les tests inscrit + les éléments persos et merge le tout
 //dans un nouveau tableau à trier selon dates
@@ -50,14 +53,17 @@ const datasForClassSelectedOrderAsc = computed(() => {
 </script>
 //v-if="user=='teacher'" --> pour la sélection de cours
 <template>
-    {{ tabClasses[0] }}
-    {{ myClass }}
+    <!--     {{ tabClasses[0] }}
+    {{ myClass }} -->
     <!--     {{ tabClasses }} -->
     <div class="containerHoraire">
-<!--         <the-selection v-if="user=='teacher'" @changeClasse="myClass = $event" v-bind:classes=tabClasses></the-selection> -->
-<!--         <div class="white">{{datasForClassSelectedOrderAsc}}</div> -->
+        <!--         <the-selection v-if="user=='teacher'" @changeClasse="myClass = $event" v-bind:classes=tabClasses></the-selection> -->
+        <!--         <div class="white">{{datasForClassSelectedOrderAsc}}</div> -->
         <h2>Prochain cours</h2>
-         <a-period  v-if="datasForClassSelectedOrderAsc != ''" v-bind:salle="datasForClassSelectedOrderAsc[0].room" v-bind:dateDebut="datasForClassSelectedOrderAsc[0].start" v-bind:dateFin="datasForClassSelectedOrderAsc[0].end" v-bind:cours="datasForClassSelectedOrderAsc[0].label" firstCours="true" typeEvent="firstCourse" sizeFont="1.5"></a-period> 
+        <a-period v-if="datasForClassSelectedOrderAsc != ''" v-bind:salle="datasForClassSelectedOrderAsc[0].room"
+            v-bind:dateDebut="datasForClassSelectedOrderAsc[0].start"
+            v-bind:dateFin="datasForClassSelectedOrderAsc[0].end" v-bind:cours="datasForClassSelectedOrderAsc[0].label"
+            firstCours="true" typeEvent="firstCourse" sizeFont="1.5"></a-period>
         <template v-if="page == 'planning' || page == 'home'">
             <ul>
                 <li v-for="course in datasForClassSelectedOrderAsc" :key="course.id">
@@ -66,6 +72,14 @@ const datasForClassSelectedOrderAsc = computed(() => {
                     </a-period>
                 </li>
             </ul>
+        </template>
+        <template v-if="page == 'mois'" id="app">
+            <h2>My Calendar</h2>
+            <calendar-view :show-date="showDate" class="theme-default holiday-us-traditional holiday-us-official">
+                <!--                 <template #header="{ headerProps }">
+                    <calendar-view-header :header-props="headerProps" @input="setShowDate" />
+                </template> -->
+            </calendar-view>
         </template>
     </div>
     <!-- v-for="(item, index) in items" -->
@@ -96,6 +110,7 @@ const datasForClassSelectedOrderAsc = computed(() => {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    flex-grow:1;
 }
 
 .thead {
@@ -115,12 +130,21 @@ ul {
     padding: 5px;
 }
 
-.white{
+.white {
     color: white;
 }
 
-.firstCours{
+.firstCours {
     width: 100%;
+}
+
+#app {
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    color: #2c3e50;
+    height: 67vh;
+    width: 90vw;
+    margin-left: auto;
+    margin-right: auto;
 }
 </style>
 

@@ -9,6 +9,7 @@ import TheHoraire from './components/TheHoraire.vue';
 import TheHeader from './components/TheHeader.vue';
 import TheMenuAddTask from './components/TheMenuAddTask.vue';
 import 'bootstrap/dist/js/bootstrap.min.js';
+import "/node_modules/vue-simple-calendar/dist/style.css";
 /* import 'https://fonts.googleapis.com/css2?family=Material+Icons';
 import 'https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;700&display=swap'; */
 
@@ -78,6 +79,8 @@ function affichageSelectionne(cours, test, event, devoir) {
     .body {
         margin-left: 15%;
         padding: 10px;
+            display: flex;
+    flex-direction: column;
     }
 }
 
