@@ -151,14 +151,18 @@ a {
 .navbar {
     min-height: 70px;
     display: flex;
+    flex-direction: row;
+    flex-wrap:nowrap;
     justify-content: space-between;
     align-items: center;
     padding: 10px 25px;
+     z-index: 2;
 }
 
 .nav-menu {
     display: flex;
     justify-content: space-between;
+         z-index: 2;
     gap: 10%;
 }
 
@@ -213,6 +217,7 @@ a {
 
 .nav-menu {
     position: fixed;
+        z-index:2;
     left: -100%;
     top: 71px;
     height: 100%;
@@ -233,6 +238,7 @@ a {
 }
 
 .nav-menu.active {
+    z-index:2;
     left: 0;
     justify-content: flex-start;
     border-top: 1px solid #E7F0FF;
@@ -272,6 +278,7 @@ a {
         padding-left: 15px;
         padding-right: 15px;
         transition: 0.3s;
+        z-index:2;
     }
 
     /*     .nav-menu.active {

@@ -39,9 +39,10 @@ function affichageSelectionne(cours, test, event, devoir) {
 </script>
 
 <template>
-<!--     @use "@material/fab";
+    <!--     @use "@material/fab";
     @include fab.core-styles;
  -->
+
     <head>
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     </head>
@@ -65,6 +66,9 @@ function affichageSelectionne(cours, test, event, devoir) {
 .app {
     display: flex;
     flex-direction: column;
+   min-height: 100vh;
+        flex-basis:auto;
+        background-color: black;
 }
 
 .body {
@@ -72,15 +76,18 @@ function affichageSelectionne(cours, test, event, devoir) {
     flex-direction: column;
     margin-top: 70px;
     background-color: black;
+            flex-basis:auto;
     padding: 10px;
+    height: 100%;
 }
 
 @media(min-width:769px) {
     .body {
         margin-left: 15%;
         padding: 10px;
-            display: flex;
-    flex-direction: column;
+        display: flex;
+        flex-direction: column;
+        height: 100%
     }
 }
 
@@ -91,5 +98,7 @@ function affichageSelectionne(cours, test, event, devoir) {
 } */
 }
 
-h1{color:white;}
+h1 {
+    color: white;
+}
 </style>
