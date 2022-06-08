@@ -8,7 +8,7 @@ const isMenuVisible = ref(false);
 const vueMobile = ref(false);
 const isButtonClicked = ref(false);
 const pageMaj = computed(() => {
-    return page.value.toUpperCase();
+    return page.value.charAt(0).toUpperCase() + page.value.slice(1);;
 })
 /* const isClicked = ref(false); */
 
@@ -61,13 +61,13 @@ page.value = pageEnvoyee;
                     <a class="nav-link-category" :class="device" v-if="device == 'smartphone'">Menu</a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link nav-link-button" :class="device" @click="fermeMenu(); redirigeSurPage('planning');">Planning</a>
+                    <a href="#planning" class="nav-link nav-link-button" :class="device" @click="fermeMenu(); redirigeSurPage('planning');">Planning</a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link nav-link-button" :class="device" @click="fermeMenu(); redirigeSurPage('mois');">Mois</a>
+                    <a href="#mois" class="nav-link nav-link-button" :class="device" @click="fermeMenu(); redirigeSurPage('mois');">Mois</a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link nav-link-button" :class="device" @click="fermeMenu(); redirigeSurPage('semaine');">Semaine</a>
+                    <a href="#semaine" class="nav-link nav-link-button" :class="device" @click="fermeMenu(); redirigeSurPage('semaine');">Semaine</a>
                 </li>
             </div>
             <div class="nav-division">
@@ -155,7 +155,7 @@ a {
     flex-wrap:nowrap;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 25px;
+    padding: 10px 15px;
      z-index: 2;
 }
 

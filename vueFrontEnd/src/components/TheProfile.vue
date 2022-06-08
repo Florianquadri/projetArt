@@ -19,7 +19,7 @@ const firstLetterName = ref('F');
 .profil {
     display: flex;
     align-items: center;
-    padding:10px 25px;
+    padding:10px 15px;
 
 }
 

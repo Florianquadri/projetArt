@@ -5,19 +5,19 @@ import { apiHoraireBase } from "../config/horaires.js"
 import ACourse from './ACourse.vue';
 import aPeriod from './aPeriod.vue';
 import TheSelection from './TheSelection.vue';
+import EventMonthly from './EventMonthly.vue';
 import { page } from "../state.js";
 import { myClass } from "../state.js";
 import { user } from "../state.js";
 import TheNextEvent from './TheNextEvent.vue';
 import "/node_modules/vue-simple-calendar/dist/style.css";
-import { CalendarView, CalendarViewHeader} from "vue-simple-calendar"
+import { CalendarView, CalendarViewHeader } from "vue-simple-calendar"
 
 const { data: courses } = useFetch(apiHoraireBase);
+const isClicked = ref(false);
+const eventPopUp = ref("");
+const eventClick=ref("");
 
-
-/* const tabClasses = computed(() => {
-  return courses.value.map(d => d.class);        
-}); */
 
 //set pour obtenir uniquement 1x chaque classe
 const tabClasses = computed(() => {
@@ -28,8 +28,8 @@ const tabClasses = computed(() => {
     }
 });
 
-function test([date, calendarItems, windowEvent]){
-    console.log(calendarItems)
+function test2(evt) {
+    console.log(evt);
 }
 
 const datasForClassSelected = computed(() => {
@@ -48,26 +48,52 @@ const datasForClassSelectedOrderAsc = computed(() => {
 //pour vue mois
 const items = computed(() => {
     if (datasForClassSelectedOrderAsc.value?.length > 0) {
-        return Array.from(datasForClassSelectedOrderAsc.value.map(d => { return { id: d.id, startDate: d.start, endDate: d.end, title: d.label } }));
+        return Array.from(datasForClassSelectedOrderAsc.value.map(d => { return { id: d.id, startDate: d.start, endDate: d.end, title: d.label, room: d.room} }));
     } else {
         return [];
     }
 })
+
+const options1 = { year: "numeric", month: "long", day: "numeric" };
+    const debutCours = computed(() => {
+        if (!eventClick.value) return '';
+        const maDate = new Date(eventClick.value);
+        return new Intl.DateTimeFormat('fr-CH', options1).format(maDate);
+    });
+
+        const tabFiltreEvent = computed(() => {
+        if (items.value?.length > 0) {
+            return items.value.filter(event => {
+                const maDate2 = new Date(event.startDate);
+                const maDate2Final = new Intl.DateTimeFormat('fr-CH', options1).format(maDate2);
+                return maDate2Final == debutCours.value
+            });
+        } else {
+            return [];
+        }
+    })
+
+//récupérer dans popup info événements du jour
+function test(evt) {
+    eventClick.value = evt;
+console.log(eventClick.value)
+    console.log(debutCours.value)
+    console.log(tabFiltreEvent.value, "asdf");
+    eventPopUp.value = evt;
+    isClicked.value = !isClicked.value;
+}
 
 const showDate = ref(new Date());
 function setShowDate(d) {
     showDate.value = d;
 }
 
-function windowEvent(){
-    console.log("salut");
+function closeInfos(){
+        isClicked.value = !isClicked.value;
 }
-
 //penser à récupérer également les tests inscrit + les éléments persos et merge le tout
 //dans un nouveau tableau à trier selon dates
-
 //class,label,room,start,end,id
-
 </script>
 //v-if="user=='teacher'" --> pour la sélection de cours
 <template>
@@ -78,7 +104,8 @@ function windowEvent(){
         <!--         <the-selection v-if="user=='teacher'" @changeClasse="myClass = $event" v-bind:classes=tabClasses></the-selection> -->
         <!--         <div class="white">{{datasForClassSelectedOrderAsc}}</div> -->
         <h2>Prochain cours</h2>
-        <a-period v-if="datasForClassSelectedOrderAsc != ''" v-bind:salle="datasForClassSelectedOrderAsc[0].room" v-bind:classe="datasForClassSelectedOrderAsc[0].class"
+        <a-period v-if="datasForClassSelectedOrderAsc != ''" v-bind:salle="datasForClassSelectedOrderAsc[0].room"
+            v-bind:classe="datasForClassSelectedOrderAsc[0].class"
             v-bind:dateDebut="datasForClassSelectedOrderAsc[0].start"
             v-bind:dateFin="datasForClassSelectedOrderAsc[0].end" v-bind:cours="datasForClassSelectedOrderAsc[0].label"
             firstCours="true" typeEvent="firstCourse" sizeFont="1.5"></a-period>
@@ -93,12 +120,18 @@ function windowEvent(){
         </template>
         <template class="div_calendar" v-if="page == 'mois'" id="app">
             <h2>Mon calendrier</h2>
-            <calendar-view :items="items"  startingDayOfWeek="1" :show-date="showDate" @click-date="test([date, calendarItems, windowEvent])"
-                class="theme-default holiday-us-traditional holiday-us-official">
+            <calendar-view :items="items" startingDayOfWeek="1" :show-date="showDate" @click-date="test($event)"
+                @click-item="test2($event)" class="theme-default holiday-us-traditional holiday-us-official">
                 <template #header="{ headerProps }">
                     <calendar-view-header :header-props="headerProps" @input="setShowDate" />
                 </template>
             </calendar-view>
+            <div class="moreInfo" :class="isClicked ? 'active' : ''">
+            <span class="bar" @click="closeInfos"></span>
+                <div v-for="itemPopUp in tabFiltreEvent" :key="itemPopUp.id" class="event">
+               <event-monthly :startDate="itemPopUp.startDate" :endDate="itemPopUp.endDate" :title="itemPopUp.title" :room="itemPopUp.room"></event-monthly>
+                </div>
+            </div>
         </template>
     </div>
     <!-- v-for="(item, index) in items" -->
@@ -109,7 +142,7 @@ function windowEvent(){
 .today {
     background-color: #6BA2FF;
     color: white;
-    border-radius:5px;
+    border-radius: 5px;
 }
 
 .past {
@@ -146,11 +179,11 @@ button.nextYear {
     display: none;
 }
 
-.cv-weeks{
+.cv-weeks {
     position: relative;
-min-height:500px;
-z-index:1;
-background-color:#262626;
+    min-height: 500px;
+    z-index: 1;
+    background-color: #262626;
     border-color: black;
     border-radius: 0px 0px 10px 10px;
 }
@@ -191,15 +224,13 @@ div.cv-day {
     text-align: center;
 }
 
-.cv-day-number{
+.cv-day-number {}
 
-}
-
-.cv-item{
-    background-color:#84F4BF;
-    color:black;
-    border-radius:10px;
-    border-color:black;
+.cv-item {
+    background-color: #84F4BF;
+    color: black;
+    border-radius: 10px;
+    border-color: black;
 }
 </style>
 
@@ -209,7 +240,16 @@ div.cv-day {
     flex-direction: row;
     justify-content: space-between;
     background-color: #60E1E0;
+}
 
+.bar {
+    width: 50px;
+    text-align: center;
+    height:100%;
+    height: 5px;
+    margin: 0px auto 10px auto;
+    background-color: white;
+    border-radius: 5px;
 
 }
 
@@ -224,6 +264,7 @@ div.cv-day {
 .containerHoraire {
     /*     margin:1rem; */
     display: flex;
+    width: 100%;
     flex-direction: column;
     justify-content: center;
     flex-grow: 1;
@@ -265,6 +306,38 @@ ul {
 
 .dowX {
     color: white;
+}
+
+div.moreInfo {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    z-index: 2;
+    bottom: -280px;
+    text-align: center;
+    width: 95%;
+    margin: auto;
+    height: 280px;
+    justify-content: flex-start;
+    background-color: #606060;
+    padding:10px;
+    opacity: 0;
+    border-radius: 10px;
+    border: 1px solid black;
+    transition: 0.3s;
+}
+
+div.moreInfo.active {
+
+    z-index: 2;
+    bottom: 15px;
+    border-top: 1px solid #E7F0FF;
+    opacity: 1;
+
+}
+
+div.event{
+    margin-bottom:10px;
 }
 
 /* .div_calendar{
