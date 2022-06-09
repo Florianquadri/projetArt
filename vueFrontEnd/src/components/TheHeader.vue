@@ -23,7 +23,7 @@ const tabClasses = computed(() => {
 <template>
     <div class="container_header">
         <the-burger></the-burger>
-                <the-selection v-if="user=='teacher'" @changeClasse="myClass = $event" v-bind:classes=tabClasses></the-selection>
+                <the-selection v-if="user=='teacher'|| user=='anonymous'" @changeClasse="myClass = $event" v-bind:classes=tabClasses></the-selection>
         <the-profile></the-profile>
     </div>
 </template>
