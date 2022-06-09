@@ -1,10 +1,15 @@
 <script setup>
 import { ref, computed, watchEffect } from 'vue';
 import aButtonMenuTask from './aButtonMenuTask.vue';
-import {user} from '../state.js';
+import addEvent from './addEvent.vue';
+import { user } from '../state.js';
+import { myClass } from '../state.js';
+
+const mustCloseContainerAddTask = ref(false);
+
 
 const mainButtonTaskPushed = ref(false);
-
+const divAddTaskVisible = ref(false);
 
 function toggleTaches() {
     mainButtonTaskPushed.value = !mainButtonTaskPushed.value;
@@ -14,6 +19,17 @@ function fermeTaches() {
     isMenuVisible.value = false;
     console.log("hello");
 }
+
+function showAddTask() {
+    mainButtonTaskPushed.value = !mainButtonTaskPushed.value;
+    divAddTaskVisible.value = !divAddTaskVisible.value;
+    console.log(divAddTaskVisible.value);
+}
+
+function hideContainer(event) {
+divAddTaskVisible.value = !divAddTaskVisible.value;
+}
+
 </script>
 
 <template>
@@ -31,18 +47,21 @@ function fermeTaches() {
             <!--         <a-button-menu-task icon="add" @click="toggleTaches"></a-button-menu-task> -->
             <div class="label_icon">
                 <span class="text">Evenement</span>
-                <a-button-menu-task icon="event"></a-button-menu-task>
+                <a-button-menu-task @click="showAddTask" icon="event"></a-button-menu-task>
             </div>
-            <div class="label_icon" v-if="user =='student'">
-                <span class="text">M49-1</span>
-                <a-button-menu-task icon="accessibility"></a-button-menu-task>
+            <div class="label_icon" v-if="user == 'student'">
+                <span class="text">{{ myClass }}</span>
+                <a-button-menu-task @click="showAddTask" icon="accessibility"></a-button-menu-task>
             </div>
 
-            <div class="label_icon" v-if="user =='teacher'">
+            <div class="label_icon" v-if="user == 'teacher'">
                 <span class="text">Test</span>
-                <a-button-menu-task icon="event_note"></a-button-menu-task>
+                <a-button-menu-task @click="showAddTask" icon="event_note"></a-button-menu-task>
             </div>
         </div>
+    </div>
+    <div class="containerAddTaask" :class="divAddTaskVisible ? 'addTaskActive' : ''">
+                <add-event @cancelAddTask="hideContainer($event)"></add-event>
     </div>
 </template>
 
@@ -61,6 +80,7 @@ function fermeTaches() {
 .containsTask {
     display: flex;
     position: fixed;
+    z-index: 4;
     right: 15px;
     bottom: 25px;
     flex-direction: column-reverse;
@@ -71,6 +91,9 @@ function fermeTaches() {
     padding:10px; */
 }
 
+.white{
+    color: white;
+}
 .containsTask.active {
     transition: 0.7s ease;
     background-color: #262626;
@@ -96,7 +119,7 @@ function fermeTaches() {
 }
 
 .add:hover {
-/*     background-color: #60E1E0; */
+    /*     background-color: #60E1E0; */
     ;
 }
 
@@ -114,7 +137,7 @@ button.pushed {
 
 span.pushed {
     color: #6BA2FF;
-    border:1px solid white
+    border: 1px solid white
 }
 
 div.label_icon {
@@ -130,7 +153,7 @@ div.label_icon {
 }
 
 .containerAllTasks {
-         background-color: #262626; 
+    background-color: #262626;
     border-radius: 10px;
     padding-left: 10px;
     padding-top: 10px;
@@ -141,6 +164,32 @@ span.text {
     flex-grow: 2;
     text-align: right;
     margin-right: 10px;
-    color:white;
+    color: white;
+}
+
+div.containerAddTaask {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    flex-basis:auto;
+    bottom: -100vh;
+    width:100vw;
+    text-align: center;
+    left: 0px;
+    height: 100vh;
+    justify-content:center;
+    background-color: black;
+    opacity: 0;
+    border: 1px solid black;
+    transition: 0.3s;
+}
+
+div.containerAddTaask.addTaskActive {
+
+    z-index: 5;
+    bottom: 0px;
+    border-top: 1px solid #E7F0FF;
+    opacity: 1;
+
 }
 </style>
