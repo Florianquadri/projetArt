@@ -29,7 +29,7 @@ const props = defineProps({
     room: {
         type: String,
         required: false,
-        default: "MX"
+        default: ""
     }
 
 })

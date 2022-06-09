@@ -159,13 +159,6 @@ a {
      z-index: 2;
 }
 
-.nav-menu {
-    display: flex;
-    justify-content: space-between;
-         z-index: 2;
-    gap: 10%;
-}
-
 .nav-link {
     transition: 0.7s ease;
 }
@@ -216,8 +209,11 @@ a {
 }
 
 .nav-menu {
+        display: flex;
+    justify-content: space-between;
+         z-index: 4;
+    gap: 10%;
     position: fixed;
-        z-index:2;
     left: -100%;
     top: 71px;
     height: 100%;
@@ -238,7 +234,6 @@ a {
 }
 
 .nav-menu.active {
-    z-index:2;
     left: 0;
     justify-content: flex-start;
     border-top: 1px solid #E7F0FF;
@@ -278,7 +273,7 @@ a {
         padding-left: 15px;
         padding-right: 15px;
         transition: 0.3s;
-        z-index:2;
+        z-index:4;
     }
 
     /*     .nav-menu.active {
