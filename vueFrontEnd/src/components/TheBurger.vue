@@ -156,7 +156,7 @@ a {
     justify-content: space-between;
     align-items: center;
     padding: 10px 15px;
-     z-index: 2;
+     z-index: 4;
 }
 
 .nav-link {
@@ -237,6 +237,12 @@ a {
     left: 0;
     justify-content: flex-start;
     border-top: 1px solid #E7F0FF;
+    z-index: 4;
+}
+
+.nav-division{
+
+    z-index: 5
 }
 
 .nav-item-flex {
