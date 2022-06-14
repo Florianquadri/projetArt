@@ -20,28 +20,41 @@ watchEffect(() => {
     affichageSelectionne(coursChecked.value, testChecked.value, eventChecked.value, devoirChecked.value);
 })
 
-
+affichageSelectionne(coursChecked.value, testChecked.value, eventChecked.value, devoirChecked.value);
 
 
 function affichageSelectionne(cours, test, event, devoir) {
-    //fetch uniquement les valeurs true (cours, devoir..)
-    console.log("je veux fetch");
-    if (cours) {
-        console.log("les cours");
+const chaineCours = computed(() => {
+    if(cours){return "/cours"}
+    return "";
+})
+
+const chaineTest = computed(() => {
+    if(test){return "/test"}
+    return "";
+})
+
+const chaineEvent = computed(() => {
+    if(event){return "/event"}
+    return "";
+})
+
+const chaineDevoir = computed(() => {
+    if(devoir){return "/devoir"}
+    return "";
+})
+
+const url = computed(() => {
+    if(!chaineCours.value && !chaineTest.value && !chaineDevoir.value && !chaineEvent.value){
+        'https://abe/cours';
     }
-    if (test) {
-        console.log("les tests");
-    }
-    if (event) {
-        console.log("les events");
-    }
-    if (devoir) {
-        console.log("les devoirs");
-    }
+return 'https://abe'+chaineCours.value+chaineTest.value+chaineEvent.value+chaineDevoir.value;
+})
+
+console.log(url.value)
+/* fetch(url); */
+
 }
-
-
-
 
 </script>
 

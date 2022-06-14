@@ -32,7 +32,6 @@ const width = computed(() => windowWidth.value)
 
 function toggleMenu() {
     isMenuVisible.value = !isMenuVisible.value;
-    console.log("hello");
 }
 
 function fermeMenu() {
@@ -238,6 +237,7 @@ a {
     justify-content: flex-start;
     border-top: 1px solid #E7F0FF;
     z-index: 4;
+    filter: drop-shadow(25vw 0px 0px rgba(0, 0, 0, 0.5));
 }
 
 .nav-division{

@@ -10,7 +10,7 @@ const props = defineProps({
     }
 })
 
-const monChoixDeClasse = ref(1);
+const monChoixDeClasse = ref(null); //valeur liée à agenda du prof ?
 
 const emits = defineEmits([
     'changeClasse'
