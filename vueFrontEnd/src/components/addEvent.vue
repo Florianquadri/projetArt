@@ -35,7 +35,7 @@ const props = defineProps({
 });
 
 const isFinished = ref(true);
-const chooseClassTaskForStudent = ref(false);
+const chooseClassTaskForStudent = ref("Devoir");
 const errorChooseClassTaskForStudent = ref(false);
 
 const classChosen = ref(null);
@@ -82,6 +82,9 @@ const forWhichClassEvent = computed(() => {
 const emits = defineEmits(["closeAddTask"]);
 
 function cancelAddTask() {
+  reinitialisationErrors();
+  reinitialisationValue();
+
   emits("closeAddTask", isFinished.value);
   console.log("ferme");
 }
@@ -151,8 +154,15 @@ const typeEventToSend = ref(null);
 
 const errors = ref([]);
 
-function validateAddTask() {
-  console.log(props.typeEvent);
+function reinitialisationValue() {
+  intitule.value = null;
+  journeeEntiere.value = null;
+  date.value = null;
+  beginningTask.value = null;
+  endTask.value = null;
+}
+
+function reinitialisationErrors() {
   isThereErrors.value = false;
   errorIntitule.value = false;
   errorBeginningTask.value = false;
@@ -160,6 +170,11 @@ function validateAddTask() {
   errorChooseClassTaskForStudent.value = false;
   errorClassChosen.value = false;
   errorDate.value = false;
+}
+
+function validateAddTask() {
+  console.log(props.typeEvent);
+  reinitialisationErrors();
 
   //reinitialisation erreur tableau
   errors.value = [];
@@ -172,7 +187,7 @@ function validateAddTask() {
   if (!date.value) {
     errorDate.value = "Une date est requise";
     isThereErrors.value = true;
-  } 
+  }
 
   if (!beginningTask.value && !journeeEntiere.value) {
     errorBeginningTask.value = "Il faut une heure de départ";
@@ -211,11 +226,8 @@ function validateAddTask() {
     errorTimeTask.value = false;
   }
 
+  //si pas d'erreur, on envoie le formulaire
   if (!isThereErrors.value) {
-    //si pas d'erreur, on envoie le formulaire
-    console.log("pas d'erreur, j'envoie le formulaire");
-    /*     console.log(begginingTaskInNumber.value, endTaskTaskInNumber.value); */
-
     const datasForLaravel = {
       titre: intitule.value,
       debut: beginningTaskISO8601.value,
@@ -228,12 +240,14 @@ function validateAddTask() {
 
     //fetch post envoi des datas au back-end
 
-/*     fetch('http://127.0.0.1:8000/api/taches', {
+    /*     fetch('http://127.0.0.1:8000/api/taches', {
             method:POST,
             body:JSON.stringify(datasForLaravel)
     }) */
 
     console.log(datasForLaravel);
+    emits("closeAddTask", isFinished.value);
+    reinitialisationValue();
   }
 
   /*         emits('closeAddTask', isFinished.value); */
@@ -338,15 +352,16 @@ function validateAddTask() {
     </div>
     <div class="containers second">
       <div class="row">
-        <div class="white">{{ event }}</div>
+        <div class="white">Type d'évent : {{ event }}</div>
         <div
           v-if="user == 'student' && props.typeEvent == 'myClassEvent'"
-          class="chooseTask"
+          class="choose"
         >
-          <label class="white" for="classes-select">Type de tâche</label>
+          <label class="white" for="task-select">Type de tâche</label>
           <select
             name="typeTask"
             id="task-select"
+             class="select"
             v-model="chooseClassTaskForStudent"
           >
             <option class="white" selected>Devoir</option>
@@ -354,11 +369,11 @@ function validateAddTask() {
           </select>
         </div>
         <div v-if="props.typeEvent == 'test'" class="choose">
-          <label class="white" for="classes-select">Choisis ta classe</label>
-          <select name="heigClasses" id="classes-select" v-model="classChosen">
-            <option class="white" value="chooseClass" selected>
+          <label class="white" for="classe-select">Choisis la classe</label>
+          <select name="heigClasses" id="classe-select" class="select" v-model="classChosen">
+<!--             <option class="white" value="chooseClass" selected>
               --Choisis ta classe--
-            </option>
+            </option> -->
             <option class="white" v-for="classe in tabClasses" :value="classe">
               {{ classe }}
             </option>
@@ -368,8 +383,8 @@ function validateAddTask() {
       <div v-if="errorChooseClassTaskForStudent" class="ligne error">
         {{ errorChooseClassTaskForStudent }}
       </div>
-           <div v-if="errorClassChosen" class="ligne error">
-        {{ errorClassChosen}}
+      <div v-if="errorClassChosen" class="ligne error">
+        {{ errorClassChosen }}
       </div>
     </div>
   </form>
@@ -378,6 +393,12 @@ function validateAddTask() {
 
 
 <style scoped>
+.select {
+  background-color: #262626;
+  border-radius: 10px;
+  color: white;
+/*   max-width:60px; */
+}
 .active {
   color: #a9ffd6;
 }
@@ -452,11 +473,21 @@ p.middle {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  padding:5px;
 }
 
 div.row {
   display: flex;
-  flex-direction: row;
+  flex-direction: row nowrap;
   justify-content: flex-start;
+  flex-basis:auto;
+}
+
+div.choose{
+  display:flex;
+  flex-direction: column;
+  padding:15px 50px;
+  flex-grow:2;
+  margin:auto;
 }
 </style>
