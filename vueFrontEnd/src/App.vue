@@ -20,6 +20,9 @@ watchEffect(() => {
     affichageSelectionne(coursChecked.value, testChecked.value, eventChecked.value, devoirChecked.value);
 })
 
+
+
+
 function affichageSelectionne(cours, test, event, devoir) {
     //fetch uniquement les valeurs true (cours, devoir..)
     console.log("je veux fetch");
@@ -36,6 +39,10 @@ function affichageSelectionne(cours, test, event, devoir) {
         console.log("les devoirs");
     }
 }
+
+
+
+
 </script>
 
 <template>

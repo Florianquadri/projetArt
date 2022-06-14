@@ -6,15 +6,46 @@ const props = defineProps({
         type: String,
         required: false,
         default: "add"
-    }
-    ,    iconHover: {
+    },    
+    iconHover: {
         type: String,
         required: false,
         default: "add"
-    }
+    },
+    baseColor: {
+        type: String,
+        required: false,
+        default: "#26292F"
+    },
+    selectedColor: {
+        type: String,
+        required: false,
+        default: "#6BA2FF"
+    },
+    backgroundColor: {
+        type: String,
+        required: false,
+        default: "black"
+    },
+    borderRadius: {
+        type: String,
+        required: false,
+        default: "10px"
+    },
+        borderColor: {
+        type: String,
+        required: false,
+        default: "transparent"
+    },
+        border: {
+        type: String,
+        required: false,
+        default: "1px"
+    },
 })
 
 const icon = ref(props.icon);
+
 </script>
 
 <template>
@@ -37,28 +68,35 @@ text-align:center;
 } */
 
 .add:hover {
-background-color:#84F4BF;;
+background-color:v-bind('props.selectedColor');
 }
 
 
 
 .add{
-border-radius:10px;
+border-radius:v-bind ('props.borderRadius');
 width:40px;
 height:40px;
 display:flex;
 justify-content:center;
 align-items:center;
-background-color:#262626;
+background-color:v-bind('props.backgroundColor');
 text-align:center;
+border-color: v-bind('props.borderColor');
+margin: auto;
 }
 
-.mdc-fab__icon{
-    color:white;
+.material-icons.mdc-fab__icon{
+   color: v-bind('props.baseColor');
+   border-color: v-bind('props.borderColor');
+
 }
 
 .mdc-fab__icon:hover{
-    color:#262626;
+    color:v-bind('props.backgroundColor');
+    border-color: v-bind('props.borderColor');
+
 }
+
 
 </style>

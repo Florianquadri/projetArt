@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed, watchEffect } from 'vue';
 const isClicked = ref(false);
+
 function toggleButton() {
     isClicked.value = !isClicked.value;
     emits('isClicked', isClicked.value);
@@ -65,7 +66,7 @@ button {
     height: 20px;
     background-color: v-bind('props.baseColor');
     border-radius: 5px;
-    border: 1px solid grey;
+    border: 1px solid rgb(90, 90, 90);
     cursor: pointer;
     border : 1px solid  v-bind('props.baseBorderColor');
 }

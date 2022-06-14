@@ -11,7 +11,10 @@ export const eventChecked = ref(false);
 
 export const devoirChecked = ref(false);
 
-export const user = ref('anonymous');
+export const user = ref('teacher');
 
 export const myClass = ref("IM49-1");
+
+export const typeOfAddTask = ref(null);
+
 //student, teacher or secretary
