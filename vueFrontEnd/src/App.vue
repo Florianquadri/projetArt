@@ -12,49 +12,8 @@ import 'bootstrap/dist/js/bootstrap.min.js';
 import "/node_modules/vue-simple-calendar/dist/style.css";
 /* import 'https://fonts.googleapis.com/css2?family=Material+Icons';
 import 'https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;700&display=swap'; */
-
-//ira dans section affichage
-import { coursChecked, testChecked, eventChecked, devoirChecked } from "./state.js";
 import { MDCRipple } from '@material/ripple';
-watchEffect(() => {
-    affichageSelectionne(coursChecked.value, testChecked.value, eventChecked.value, devoirChecked.value);
-})
 
-affichageSelectionne(coursChecked.value, testChecked.value, eventChecked.value, devoirChecked.value);
-
-
-function affichageSelectionne(cours, test, event, devoir) {
-const chaineCours = computed(() => {
-    if(cours){return "/cours"}
-    return "";
-})
-
-const chaineTest = computed(() => {
-    if(test){return "/test"}
-    return "";
-})
-
-const chaineEvent = computed(() => {
-    if(event){return "/event"}
-    return "";
-})
-
-const chaineDevoir = computed(() => {
-    if(devoir){return "/devoir"}
-    return "";
-})
-
-const url = computed(() => {
-    if(!chaineCours.value && !chaineTest.value && !chaineDevoir.value && !chaineEvent.value){
-        'https://abe/cours';
-    }
-return 'https://abe'+chaineCours.value+chaineTest.value+chaineEvent.value+chaineDevoir.value;
-})
-
-console.log(url.value)
-/* fetch(url); */
-
-}
 
 </script>
 
