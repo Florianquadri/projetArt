@@ -1,4 +1,3 @@
-
 import { ref } from 'vue';
 
 export const page = ref('home');
@@ -11,12 +10,18 @@ export const eventChecked = ref(true);
 
 export const devoirChecked = ref(true);
 
-export const user = ref('teacher');
+export const typeOfAddTask = ref(null);
+
+export const user = ref('student');
 
 export const myClass = ref("IM49-1");
 
-export const typeOfAddTask = ref(null);
-
 //student, teacher or secretary
+
+
+
+export const user2 = ref(null);
+export const userPrenom= ref(null);
+export const userClass = ref(null);
 
 

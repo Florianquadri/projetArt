@@ -1,6 +1,7 @@
 <script setup>
 import 'bootstrap/dist/css/bootstrap.min.css'
 import "bootstrap"
+
 import { ref, computed, watchEffect } from 'vue';
 import { useFetch } from './composables/fetch.js';
 import TheConnexion from './components/TheConnexion.vue';
@@ -14,8 +15,62 @@ import "/node_modules/vue-simple-calendar/dist/style.css";
 import 'https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;700&display=swap'; */
 
 //ira dans section affichage
-import { coursChecked, testChecked, eventChecked, devoirChecked } from "./state.js";
+import { coursChecked, testChecked, eventChecked, devoirChecked, user, userClass, userPrenom } from "./state.js";
 import { MDCRipple } from '@material/ripple';
+
+/* fetch('https://abe-pingouin.heig-vd.ch/user/info')
+.then(response => response.json())
+.then(data => console.log(data)) */
+/* if (data.role == "student") {
+  user.value = "student";
+} else if (data.role == "teacher") {
+  user.value = "teacher";
+} else {
+  user.value = "anonymous";
+}
+console.log(user.value);
+ */
+
+/* const {data: userInformation} = useFetch('https://abe-pingouin.heig-vd.ch/user/info')
+watchEffect(console.log(userInformation.value, "userInformation"))
+watchEffect(() => {
+  if (userInformation.value == "student") {
+    user.value = "student";
+  } else if (userInformation.value== "teacher") {
+    user.value = "teacher";
+  } else {
+    user.value = "anonymous";
+  }
+  console.log(user.value, "youpie user value");
+}) */
+
+const {data: userRole} = useFetch('https://abe-pingouin.heig-vd.ch/user/role')
+watchEffect(console.log(userRole.value, "userRole"))
+watchEffect(() => {
+  if (userRole.value == "student") {
+    user.value = "student";
+  } else if (userRole.value== "teacher") {
+    user.value = "teacher";
+  } else {
+    user.value = "anonymous";
+  }
+  console.log("user.value", user.value, );
+})
+
+
+const {data: userInfo} = useFetch('https://abe-pingouin.heig-vd.ch/user/info')
+watchEffect(() => {
+ 
+    userClass.value = userInfo.value.classe
+    console.log("Userclass.value", userClass.value, );
+    userPrenom.value = userInfo.value.prenom
+    console.log("userPrenom.value", userPrenom.value, );
+    userNom.value = userInfo.value.nom
+    console.log("userNom.value", userNom.value, );
+   })
+
+
+
 watchEffect(() => {
     affichageSelectionne(coursChecked.value, testChecked.value, eventChecked.value, devoirChecked.value);
 })
