@@ -13,6 +13,7 @@ import { user } from "../state.js";
 import TheNextEvent from "./TheNextEvent.vue";
 import "/node_modules/vue-simple-calendar/dist/style.css";
 import { CalendarView, CalendarViewHeader } from "vue-simple-calendar";
+import aButtonChecked from "./aButtonChecked.vue";
 
 //ira dans section affichage
 import {
@@ -23,42 +24,73 @@ import {
   classOuPrivateToFetch,
 } from "../state.js";
 
+const seeHistorique = ref(true);
+function toggleHistorique() {
+  seeHistorique.value = !seeHistorique.value;
+}
+
+const dataToFetch = computed(() => {
+    if (seeHistorique.value){
+        return courses.value;
+    }
+    return onlyFuturEvent.value;
+})
+
+const dateActuelle = ref(new Date());
+const dateActuelleIso = computed(() => {
+  return Date.parse(dateActuelle.value.toISOString());
+});
+
 const urlCours = computed(() => {
-    if (coursChecked.value) return "/course";
-    return "";
-})
+  if (coursChecked.value) return "/course";
+  return "";
+});
 const urlTest = computed(() => {
-    if (testChecked.value) return "/test";
-    return "";
-})
+  if (testChecked.value) return "/test";
+  return "";
+});
 const urlEvent = computed(() => {
-    if (eventChecked.value) return "/event";
-    return "";
-})
+  if (eventChecked.value) return "/event";
+  return "";
+});
 const urlDevoir = computed(() => {
-    if (devoirChecked.value) return "/devoir";
-    return "";
-})
+  if (devoirChecked.value) return "/devoir";
+  return "";
+});
 const urlClassOrPrivate = computed(() => {
-    if (classOuPrivateToFetch.value != "private") return "/horairefiltreClasse/"+myClass.value;
-    return "/horairefiltre";
-})
+  if (classOuPrivateToFetch.value != "private")
+    return "/horairefiltreClasse/" + myClass.value;
+  return "/horairefiltre";
+});
 
 const smthSelected = computed(() => {
-    if (!coursChecked.value && !testChecked.value && !eventChecked.value && !devoirChecked.value ) return "/course";
-    return "";
-})
+  if (
+    !coursChecked.value &&
+    !testChecked.value &&
+    !eventChecked.value &&
+    !devoirChecked.value
+  )
+    return "/course";
+  return "";
+});
 
 const urlFinale = computed(() => {
-return baseURL+urlClassOrPrivate.value+urlCours.value+urlTest.value+urlEvent.value+urlDevoir.value+smthSelected.value;
-})
-
+  return (
+    baseURL +
+    urlClassOrPrivate.value +
+    urlCours.value +
+    urlTest.value +
+    urlEvent.value +
+    urlDevoir.value +
+    smthSelected.value
+  );
+});
 
 const urlAFetch = ref(null);
 const fetchClass = ref(false);
 
 watchEffect(() => {
-  console.log(urlFinale.value)
+  console.log(urlFinale.value);
 });
 
 console.log(apiHoraireBasique);
@@ -71,7 +103,9 @@ console.log("hello2");
 //id, classe, title, startDate, endDate,localisation,typeEvent, description
 
 const { data: courses } = useFetch("https://abe-pingouin.heig-vd.ch/testflo2");
-const { data: allCourses } = useFetch("https://abe-pingouin.heig-vd.ch/horairetoutesclasses");
+const { data: allCourses } = useFetch(
+  "https://abe-pingouin.heig-vd.ch/horairetoutesclasses"
+);
 const isClicked = ref(false);
 const eventPopUp = ref("");
 const eventClick = ref("");
@@ -80,6 +114,16 @@ const eventClick = ref("");
 const tabClasses = computed(() => {
   if (courses.value?.length > 0) {
     return Array.from(new Set(allCourses.value.map((d) => d.classe))); //d.classe pour le nouveau --> aller chercher toutes le tableau avec tous les cours et classes
+  } else {
+    return [];
+  }
+});
+
+const onlyFuturEvent = computed(() => {
+  if (courses.value?.length > 0) {
+    return courses.value.filter((event) => {
+      return dateActuelleIso.value < Date.parse(event.startDate);
+    });
   } else {
     return [];
   }
@@ -114,7 +158,7 @@ const items = computed(() => {
       courses.value.map((d) => {
         return {
           id: d.id,
-          startDate : d.startDate,
+          startDate: d.startDate,
           endDate: d.endDate,
           title: d.title,
           localisation: d.localisation,
@@ -182,19 +226,31 @@ function closeInfos() {
     <!--         <div class="white">{{datasForClassSelectedOrderAsc}}</div> -->
     <h2>Prochain cours</h2>
     <a-period
-      v-if="datasForClassSelectedOrderAsc != ''"
-      v-bind:salle="datasForClassSelectedOrderAsc[0].room"
-      v-bind:classe="datasForClassSelectedOrderAsc[0].class"
-      v-bind:dateDebut="datasForClassSelectedOrderAsc[0].start"
-      v-bind:dateFin="datasForClassSelectedOrderAsc[0].end"
-      v-bind:cours="datasForClassSelectedOrderAsc[0].label"
+      v-if="courses"
+      v-bind:salle="onlyFuturEvent[0].localisation"
+      v-bind:classe="onlyFuturEvent[0].classe"
+      v-bind:dateDebut="onlyFuturEvent[0].startDate"
+      v-bind:dateFin="onlyFuturEvent[0].endDate"
+      v-bind:cours="onlyFuturEvent[0].title"
       firstCours="true"
       typeEvent="firstCourse"
       sizeFont="1.5"
     ></a-period>
+    <div class="historique">
+      <a-button-checked
+        baseColor="transparent"
+        hoverColor="grey"
+        selectedColor="#84F4BF"
+        baseBorderColor="#84F4BF"
+        selectedBorderColor="#84F4BF"
+        value="cours"
+        @isClicked="toggleHistorique($event)"
+      ></a-button-checked>
+      <span class="white">Voir l'historique</span>
+    </div>
     <template v-if="page == 'planning' || page == 'home'">
       <ul>
-        <li v-for="course in courses" :key="course.id">
+        <li v-for="course in dataToFetch" :key="course.id">
           <a-period
             v-bind:classe="course.classe"
             v-bind:cours="course.title"
@@ -211,7 +267,7 @@ function closeInfos() {
       <h2>Mon calendrier</h2>
       <calendar-view
         :items="items"
-        startingDayOfWeek="1"
+        :startingDayOfWeek="1"
         :show-date="showDate"
         @click-date="test($event)"
         @click-item="test2($event)"
@@ -342,6 +398,16 @@ div.cv-day {
 </style>
 
 <style scoped>
+.historique {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  margin-left:75px;
+}
+
+div.historique span {
+    margin-left:10px;
+}
 .enTeteHoraire {
   display: flex;
   flex-direction: row;
