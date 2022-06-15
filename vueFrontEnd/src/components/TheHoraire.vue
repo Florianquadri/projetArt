@@ -236,7 +236,7 @@ function closeInfos() {
       typeEvent="firstCourse"
       sizeFont="1.5"
     ></a-period>
-    <div class="historique">
+    <div class="historique" v-if="page=='planning'">
       <a-button-checked
         baseColor="transparent"
         hoverColor="grey"
