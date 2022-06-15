@@ -13,7 +13,33 @@ import "/node_modules/vue-simple-calendar/dist/style.css";
 /* import 'https://fonts.googleapis.com/css2?family=Material+Icons';
 import 'https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;700&display=swap'; */
 import { MDCRipple } from '@material/ripple';
+import {user, userClass, userPrenom, userNom } from "./state.js";
 
+/* const {data: userRole} = useFetch('https://abe-pingouin.heig-vd.ch/user/role')
+watchEffect(console.log(userRole.value, "userRole"))
+watchEffect(() => {
+  if (userRole.value == "student") {
+    user.value = "student";
+  } else if (userRole.value== "teacher") {
+    user.value = "teacher";
+  } else {
+    user.value = "anonymous";
+  }
+  console.log("user.value", user.value, );
+})
+
+
+const {data: userInfo} = useFetch('https://abe-pingouin.heig-vd.ch/user/info')
+watchEffect(() => {
+ 
+    userClass.value = userInfo.value.classe
+    console.log("Userclass.value", userClass.value, );
+    userPrenom.value = userInfo.value.prenom
+    console.log("userPrenom.value", userPrenom.value, );
+    userNom.value = userInfo.value.nom
+    console.log("userNom.value", userNom.value, );
+   })
+ */
 
 </script>
 
