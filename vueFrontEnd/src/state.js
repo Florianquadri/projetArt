@@ -23,4 +23,9 @@ export const classOuPrivateToFetch = ref("privsdf");
 
 //student, teacher or secretary ou anonymous
 
+export const user2 = ref(null);
+export const userPrenom= ref(null);
+export const userClass = ref(null);
+export const userNom = ref(null);
+
 
