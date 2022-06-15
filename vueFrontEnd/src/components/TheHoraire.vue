@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, watchEffect } from "vue";
 import { useFetch } from "../composables/fetch.js";
-import { apiHoraireBase } from "../config/horaires.js";
+import { apiHoraireBase, baseURL } from "../config/horaires.js";
 import { apiHoraireBasique } from "../config/horaires.js";
 import ACourse from "./ACourse.vue";
 import aPeriod from "./aPeriod.vue";
@@ -20,72 +20,51 @@ import {
   testChecked,
   eventChecked,
   devoirChecked,
+  classOuPrivateToFetch,
 } from "../state.js";
 
+const urlCours = computed(() => {
+    if (coursChecked.value) return "/course";
+    return "";
+})
+const urlTest = computed(() => {
+    if (testChecked.value) return "/test";
+    return "";
+})
+const urlEvent = computed(() => {
+    if (eventChecked.value) return "/event";
+    return "";
+})
+const urlDevoir = computed(() => {
+    if (devoirChecked.value) return "/devoir";
+    return "";
+})
+const urlClassOrPrivate = computed(() => {
+    if (classOuPrivateToFetch.value != "private") return "/"+myClass.value;
+    return "";
+})
+
+const smthSelected = computed(() => {
+    if (!coursChecked.value && !testChecked.value && !eventChecked.value && !devoirChecked.value ) return "/course";
+    return "";
+})
+
+const urlFinale = computed(() => {
+return baseURL+"/horairefiltre"+urlCours.value+urlTest.value+urlEvent.value+urlDevoir.value+urlClassOrPrivate.value+smthSelected.value;
+})
+
+
+
+
+const urlAFetch = ref(null);
+const fetchClass = ref(false);
+
 watchEffect(() => {
-  changeURLFetch(
-    coursChecked.value,
-    testChecked.value,
-    eventChecked.value,
-    devoirChecked.value
-  );
+  console.log(urlFinale.value)
 });
 
-function changeURLFetch(cours, test, event, devoir) {
-  const chaineCours = computed(() => {
-    if (cours) {
-      return "/cours";
-    }
-    return "";
-  });
-
-  const chaineTest = computed(() => {
-    if (test) {
-      return "/test";
-    }
-    return "";
-  });
-
-  const chaineEvent = computed(() => {
-    if (event) {
-      return "/event";
-    }
-    return "";
-  });
-
-  const chaineDevoir = computed(() => {
-    if (devoir) {
-      return "/devoir";
-    }
-    return "";
-  });
-
-  const url = computed(() => {
-    if (
-      "https://abe" +
-        chaineCours.value +
-        chaineTest.value +
-        chaineEvent.value +
-        chaineDevoir.value ==
-      "https://abe"
-    ) {
-      return "https://abe/cours";
-    }
-    return (
-      "https://abe" +
-      chaineCours.value +
-      chaineTest.value +
-      chaineEvent.value +
-      chaineDevoir.value
-    );
-  });
-
-  console.log(url.value);
-  /* fetch(url); */
-}
-
 console.log(apiHoraireBasique);
-const { data: infos } = useFetch("https://abe-pingouin.heig-vd.ch/taches");
+const { data: infos } = useFetch("https://abe-pingouin.heig-vd.ch/horairefiltre/course");
 watchEffect(() => {
   console.log(infos.value);
 });
