@@ -62,7 +62,7 @@ watchEffect(() => {
 });
 
 console.log(apiHoraireBasique);
-const { data: infos } = useFetch("https://abe-pingouin.heig-vd.ch/horairefiltre/course");
+const { data: infos } = useFetch("https://abe-pingouin.heig-vd.ch/testflo2");
 watchEffect(() => {
   console.log(infos.value);
 });
@@ -70,7 +70,8 @@ console.log("hello2");
 //le fetch = les cases sélectionnées --> fetch réactif (cours, tâches, event, devoir)
 //id, classe, title, startDate, endDate,localisation,typeEvent, description
 
-const { data: courses } = useFetch(apiHoraireBase);
+const { data: courses } = useFetch("https://abe-pingouin.heig-vd.ch/testflo2");
+const { data: allCourses } = useFetch("https://abe-pingouin.heig-vd.ch/horairetoutesclasses");
 const isClicked = ref(false);
 const eventPopUp = ref("");
 const eventClick = ref("");
@@ -78,7 +79,7 @@ const eventClick = ref("");
 //set pour obtenir uniquement 1x chaque classe
 const tabClasses = computed(() => {
   if (courses.value?.length > 0) {
-    return Array.from(new Set(courses.value.map((d) => d.class))); //d.classe pour le nouveau --> aller chercher toutes le tableau avec tous les cours et classes
+    return Array.from(new Set(allCourses.value.map((d) => d.classe))); //d.classe pour le nouveau --> aller chercher toutes le tableau avec tous les cours et classes
   } else {
     return [];
   }
@@ -108,15 +109,15 @@ const datasForClassSelectedOrderAsc = computed(() => {
 
 //pour vue mois
 const items = computed(() => {
-  if (datasForClassSelectedOrderAsc.value?.length > 0) {
+  if (courses.value?.length > 0) {
     return Array.from(
-      datasForClassSelectedOrderAsc.value.map((d) => {
+      courses.value.map((d) => {
         return {
           id: d.id,
-          startDate: d.start,
-          endDate: d.end,
-          title: d.label,
-          room: d.room,
+          startDate : d.startDate,
+          endDate: d.endDate,
+          title: d.title,
+          localisation: d.localisation,
         };
       })
     );
@@ -180,7 +181,6 @@ function closeInfos() {
     <!--         <the-selection v-if="user=='teacher'" @changeClasse="myClass = $event" v-bind:classes=tabClasses></the-selection> -->
     <!--         <div class="white">{{datasForClassSelectedOrderAsc}}</div> -->
     <h2>Prochain cours</h2>
-    {{ infos }}
     <a-period
       v-if="datasForClassSelectedOrderAsc != ''"
       v-bind:salle="datasForClassSelectedOrderAsc[0].room"
@@ -194,13 +194,13 @@ function closeInfos() {
     ></a-period>
     <template v-if="page == 'planning' || page == 'home'">
       <ul>
-        <li v-for="course in datasForClassSelectedOrderAsc" :key="course.id">
+        <li v-for="course in courses" :key="course.id">
           <a-period
-            v-bind:classe="course.class"
-            v-bind:cours="course.label"
-            v-bind:salle="course.room"
-            v-bind:dateDebut="course.start"
-            v-bind:dateFin="course.end"
+            v-bind:classe="course.classe"
+            v-bind:cours="course.title"
+            v-bind:salle="course.localisation"
+            v-bind:dateDebut="course.startDate"
+            v-bind:dateFin="course.endDate"
             typeEvent="course"
           >
           </a-period>
