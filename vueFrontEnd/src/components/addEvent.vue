@@ -261,11 +261,15 @@ function validateAddTask() {
       <a-button-menu-task
         @click="cancelAddTask"
         icon="close"
+        baseColor="#C8C8C8"
+        backgroundColor="#262626"
       ></a-button-menu-task>
       <p class="white middle">Nouvel événement</p>
       <a-button-menu-task
         @click.prevent="validateAddTask"
         icon="done"
+                baseColor="#C8C8C8"
+        backgroundColor="#262626"
       ></a-button-menu-task>
     </div>
     <div class="containers">

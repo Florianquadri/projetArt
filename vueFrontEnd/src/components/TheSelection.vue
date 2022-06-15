@@ -10,7 +10,7 @@ const props = defineProps({
     }
 })
 
-const monChoixDeClasse = ref(null); //valeur liée à agenda du prof ?
+const monChoixDeClasse = ref("Horaire teacher"); //valeur liée à agenda du prof ?
 
 const emits = defineEmits([
     'changeClasse'
@@ -25,11 +25,11 @@ function onChange(evenement) {
 
 <template>
     <!--     <h2>Sélection cours / période de temps / que voir exams</h2> -->
-    <div class="container_list">
+    <div class="container_list white">
 
         <label class="white" for="classes-select">Choisis ta classe</label>
-        <select name="heigClasses" id="classes-select" v-model="monChoixDeClasse" @change="onChange($evenement)">
-            <option class="white" value="chooseClass" selected>--Choisis ta classe--</option>
+        <select name="heigClasses" class="white" id="classes-select" v-model="monChoixDeClasse" @change="onChange($evenement)">
+            <option class="white" value="chooseClass">Your planning</option>
             <option class="white" v-for="classe in classes" :value="classe">{{ classe }}</option>
         </select>
             </div>
