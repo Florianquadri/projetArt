@@ -91,18 +91,6 @@ function redirigeSurPage(pageEnvoyee) {
             >Mois</a
           >
         </li>
-        <li class="nav-item">
-          <a
-            href="#semaine"
-            class="nav-link nav-link-button"
-            :class="device"
-            @click="
-              fermeMenu();
-              redirigeSurPage('semaine');
-            "
-            >Semaine</a
-          >
-        </li>
       </div>
       <div class="nav-division">
         <li class="nav-item">

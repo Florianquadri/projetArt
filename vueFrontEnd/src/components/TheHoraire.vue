@@ -40,8 +40,8 @@ const urlDevoir = computed(() => {
     return "";
 })
 const urlClassOrPrivate = computed(() => {
-    if (classOuPrivateToFetch.value != "private") return "/"+myClass.value;
-    return "";
+    if (classOuPrivateToFetch.value != "private") return "/horairefiltreClasse/"+myClass.value;
+    return "/horairefiltre";
 })
 
 const smthSelected = computed(() => {
@@ -50,10 +50,8 @@ const smthSelected = computed(() => {
 })
 
 const urlFinale = computed(() => {
-return baseURL+"/horairefiltre"+urlCours.value+urlTest.value+urlEvent.value+urlDevoir.value+urlClassOrPrivate.value+smthSelected.value;
+return baseURL+urlClassOrPrivate.value+urlCours.value+urlTest.value+urlEvent.value+urlDevoir.value+smthSelected.value;
 })
-
-
 
 
 const urlAFetch = ref(null);
