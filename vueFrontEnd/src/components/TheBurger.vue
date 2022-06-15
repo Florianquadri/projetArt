@@ -266,12 +266,12 @@ a {
 }
 
 .hamburger.active .bar:nth-child(1) {
-  transform: translateY(8px) rotate(405deg);
+  transform: translateY(8px) rotate(225deg);
   background-color: #A9FFD6;
 }
 
 .hamburger.active .bar:nth-child(3) {
-  transform: translateY(-8px) rotate(-405deg);
+  transform: translateY(-8px) rotate(-225deg);
     background-color: #FF8935;
 }
 
