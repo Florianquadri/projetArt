@@ -102,7 +102,7 @@ console.log("hello2");
 //le fetch = les cases sélectionnées --> fetch réactif (cours, tâches, event, devoir)
 //id, classe, title, startDate, endDate,localisation,typeEvent, description
 
-const { data: courses } = useFetch("https://abe-pingouin.heig-vd.ch/testflo2");
+const { data: courses } = useFetch(urlFinale.value);
 //gérer bug quand y'a pas de prochaine date
 const { data: allCourses } = useFetch(
   "https://abe-pingouin.heig-vd.ch/horairetoutesclasses"
