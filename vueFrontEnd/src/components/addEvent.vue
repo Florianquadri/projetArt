@@ -61,7 +61,7 @@ const event = computed(() => {
     return "Test";
   }
   if (props.typeEvent == "academic") {
-    return "Académic";
+    return "Académique";
   }
 });
 const forWhichClassEvent = computed(() => {
