@@ -121,7 +121,6 @@ watchEffect(() => {
         margin-left: 15%;
         padding-right: 10px;
          padding-left: 10px;
-         margin-top: 70px;
         display: flex;
         flex-direction: column;
         height: 100%
