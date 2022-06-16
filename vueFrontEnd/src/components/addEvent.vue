@@ -240,14 +240,14 @@ function validateAddTask() {
 
     //fetch post envoi des datas au back-end
 
-    fetch("https://abe-pingouin.heig-vd.ch/api/taches", {
-      method: "POST",
-      headers: {
-        "Accept": "application/json",
-        "Authorization": "application/json"
-      },
-      body: JSON.stringify(datasForLaravel),
-    });
+fetch("https://abe-pingouin.heig-vd.ch/api/taches", {
+  method: "POST",
+  headers: {
+    "Accept": "application/json",
+    "Content-Type": 'application/json',    
+  },
+  body: JSON.stringify(datasForLaravel),
+});
 
     console.log(datasForLaravel);
     emits("closeAddTask", isFinished.value);
