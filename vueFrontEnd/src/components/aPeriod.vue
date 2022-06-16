@@ -46,8 +46,57 @@ const props = defineProps({
     required: false,
     default: 1,
   },
+  backgroundColor: {
+        type: String,
+        required: false,
+        default: "#262626"
+    }
+
+
 });
 //course,
+
+const optionsAll = {
+  weekday: "short",
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+  hour: "numeric",
+  minute: "numeric",
+  second: "numeric",
+};
+const options1 = { hour: "numeric", minute: "numeric" };
+const options2 = { day: "numeric" };
+const options3 = { month: "short" };
+const options4 = { month: "long" };
+
+var today = new Date();
+/* var day = today.getDate(); */ 
+var day = "17";
+var month = today.getMonth()+1;
+
+
+const monMois = new Intl.DateTimeFormat('fr-CH', options4).format(today);
+    
+
+const moisCours = computed(() => {
+    const maDate = new Date(props.dateDebut);
+    return new Intl.DateTimeFormat('fr-CH', options4).format(maDate);
+    
+});
+
+const dateCours = computed(() => {
+    if (!props.dateDebut) return '';
+    const maDate = new Date(props.dateDebut);
+    return new Intl.DateTimeFormat('fr-CH', options2).format(maDate);
+});
+
+console.log(moisCours);
+
+/* const whichColorBackground = day == dateCours.value ? "#FFFFFF" : props.backgroundColor; */
+
+const whichColorBackground = computed(() => day == dateCours.value && moisCours.value == monMois ? "#6BA2FF" : props.backgroundColor)
+
 const whatTypeEvent = computed(() => {
   if (props.typeEvent == "Test") return "#F94040";
   if (props.typeEvent == "Perso") return "#FF8127";
@@ -73,18 +122,7 @@ const salle = computed(() => {
   return props.salle;
 });
 
-const optionsAll = {
-  weekday: "short",
-  year: "numeric",
-  month: "long",
-  day: "numeric",
-  hour: "numeric",
-  minute: "numeric",
-  second: "numeric",
-};
-const options1 = { hour: "numeric", minute: "numeric" };
-const options2 = { day: "numeric" };
-const options3 = { month: "short" };
+
 
 /* options.timeZone = 'UTC';
 options.timeZoneName = 'short'; */
@@ -95,11 +133,7 @@ const debutCours = computed(() => {
   return new Intl.DateTimeFormat("fr-CH", options1).format(maDate);
 });
 
-const dateCours = computed(() => {
-  if (!props.dateDebut) return "";
-  const maDate = new Date(props.dateDebut);
-  return new Intl.DateTimeFormat("fr-CH", options2).format(maDate);
-});
+
 const dateCoursMois = computed(() => {
   if (!props.dateDebut) return "";
   const maDate = new Date(props.dateDebut);
@@ -116,7 +150,7 @@ const finCours = computed(() => {
 </script>
 <template>
   <div class="period">
-    <div v-if="!firstCours" class="jour">
+    <div v-if="!firstCours" class="jour" :style="{'background-color': whichColorBackground}">
       <span class="bulle">{{ dateCours }}</span>
       <span class="bulle">{{ dateCoursMois }}</span>
     </div>
@@ -184,7 +218,7 @@ const finCours = computed(() => {
   justify-content: center;
   align-items: center;
   text-align: center;
-  background-color: #6ba2ff;
+
   margin-right: 10px;
 }
 

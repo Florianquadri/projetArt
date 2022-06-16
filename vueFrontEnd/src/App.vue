@@ -119,7 +119,9 @@ watchEffect(() => {
 @media(min-width:769px) {
     .body {
         margin-left: 15%;
-        padding: 10px;
+        padding-right: 10px;
+         padding-left: 10px;
+         margin-top: 70px;
         display: flex;
         flex-direction: column;
         height: 100%

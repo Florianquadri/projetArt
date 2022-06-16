@@ -34,7 +34,7 @@ const tabClasses = computed(() => {
 .container_header {
     width: 100%;
     min-height: 70px;
-    position: fixed;
+    
     top: 0;
     display: flex;
     flex-direction: row;
