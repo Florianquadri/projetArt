@@ -14,8 +14,9 @@ import "/node_modules/vue-simple-calendar/dist/style.css";
 import 'https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;700&display=swap'; */
 import { MDCRipple } from '@material/ripple';
 import {user, userClass, userPrenom, userNom } from "./state.js";
-
-/* const {data: userRole} = useFetch('https://abe-pingouin.heig-vd.ch/user/role')
+/* const {data: userRole} = useFetch('/api/user/role')
+watchEffect(console.log(userRole.value, "userRole")) */
+const {data: userRole} = useFetch('/api/user/role')
 watchEffect(console.log(userRole.value, "userRole"))
 watchEffect(() => {
   if (userRole.value == "student") {
@@ -27,9 +28,7 @@ watchEffect(() => {
   }
   console.log("user.value", user.value, );
 })
-
-
-const {data: userInfo} = useFetch('https://abe-pingouin.heig-vd.ch/user/info')
+/* const {data: userInfo} = useFetch('/api/user/info')
 watchEffect(() => {
  
     userClass.value = userInfo.value.classe
@@ -38,9 +37,7 @@ watchEffect(() => {
     console.log("userPrenom.value", userPrenom.value, );
     userNom.value = userInfo.value.nom
     console.log("userNom.value", userNom.value, );
-   })
- */
-
+   }) */
 </script>
 
 <template>
@@ -75,7 +72,6 @@ watchEffect(() => {
         flex-basis:auto;
         background-color: black;
 }
-
 .body {
     display: flex;
     flex-direction: column;
@@ -85,7 +81,6 @@ watchEffect(() => {
     padding: 10px;
     height: 100%;
 }
-
 @media(min-width:769px) {
     .body {
         margin-left: 15%;
@@ -95,14 +90,12 @@ watchEffect(() => {
         height: 100%
     }
 }
-
 @media(min-width:993) {
     /*     .body {
   margin-left:10%;
   padding:10px;
 } */
 }
-
 h1 {
     color: white;
 }
