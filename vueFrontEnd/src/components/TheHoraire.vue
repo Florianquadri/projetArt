@@ -98,20 +98,9 @@ watchEffect(() => {
 });
 
 console.log(apiHoraireBasique);
-const { data: infos } = useFetch("https://abe-pingouin.heig-vd.ch/testflo");
-watchEffect(() => {
-  console.log(infos.value);
-});
-console.log("hello2");
-//le fetch = les cases sélectionnées --> fetch réactif (cours, tâches, event, devoir)
-//id, classe, title, startDate, endDate,localisation,typeEvent, description
-
-//censé être réactif --> dans un watch effect ?
 
 const { data: courses } = useFetchReactive(urlFinale);
 
-
-//gérer bug quand y'a pas de prochaine date
 const { data: allCourses } = useFetch(
   "https://abe-pingouin.heig-vd.ch/horairetoutesclasses"
 );
@@ -119,7 +108,7 @@ const isClicked = ref(false);
 const eventPopUp = ref("");
 const eventClick = ref("");
 
-//set pour obtenir uniquement 1x chaque classe
+//set pour obtenir uniquement 1x chaque classe pour créer un sélecteur de classe
 const tabClasses = computed(() => {
   if (allCourses.value?.length > 0) {
     return Array.from(new Set(allCourses.value.map((d) => d.classe))); //d.classe pour le nouveau --> aller chercher toutes le tableau avec tous les cours et classes
@@ -128,10 +117,7 @@ const tabClasses = computed(() => {
   }
 });
 
-watchEffect(() => {
-  console.log(tabClasses.value)
-})
-
+//obtenir uniquement les prochains évents (pour gérer historique + next event)
 const onlyFuturEvent = computed(() => {
   if (courses.value?.length > 0) {
     return courses.value.filter((event) => {
@@ -142,14 +128,13 @@ const onlyFuturEvent = computed(() => {
   }
 });
 
+//si on veut gérer le click sur chaque événement du calendrier
 function test2(evt) {
   console.log(evt);
 }
 
-//si étudiant ou prof de base, pas besoin car renvoie horaire de base. Mais si prof choisit la classe, cela doit
-// modifier le tableau à envoyer à planning ou calendrier
 
-const datasForClassSelected = computed(() => {
+/* const datasForClassSelected = computed(() => {
   if (courses.value?.length > 0) {
     return courses.value.filter((classe) => classe.class == myClass.value);
   } else {
@@ -162,7 +147,7 @@ const datasForClassSelectedOrderAsc = computed(() => {
   return datasForClassSelected.value.sort((a, b) => {
     return new Date(a.start) - new Date(b.start);
   });
-});
+}); */
 
 //pour vue mois
 const items = computed(() => {
