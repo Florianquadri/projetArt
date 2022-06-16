@@ -110,7 +110,6 @@ watchEffect(() => {
 .body {
     display: flex;
     flex-direction: column;
-    margin-top: 70px;
     background-color: black;
             flex-basis:auto;
     padding: 10px;
