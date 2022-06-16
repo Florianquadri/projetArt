@@ -234,7 +234,7 @@ const finCours = computed(() => {
   flex-grow: 3;
   padding: 5px;
   justify-content: center;
-  background-color: v-bind("whatTypeEvent");
+  background-color: v-bind("whatTypeEvent.value");
 }
 
 .infosJourLigne {
@@ -254,7 +254,7 @@ span.salle {
 }
 
 .textCours {
-  color: v-bind("whichColorFont");
+  color: v-bind("whichColorFont.value");
   /*     font-size:v-bind('props.sizeFont') px; */
 }
 
