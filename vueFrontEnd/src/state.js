@@ -27,7 +27,7 @@ export const URLToFetch = ref("");
 
 export const user2 = ref(null);
 export const userPrenom= ref(null);
-export const userClass = ref(null);
+export const userClass = ref("");
 export const userNom = ref(null);
 
 

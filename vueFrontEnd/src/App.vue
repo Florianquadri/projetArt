@@ -43,7 +43,7 @@ watchEffect(() => {
     
   } else if (user.value== "teacher") {
     userClass.value = "Pas de classe"
-    console.log("userPrenom.value", userClass.value, );
+    console.log("userClasse.value", userClass.value, );
     userPrenom.value = userInfo.value.prenom
     console.log("userPrenom.value", userPrenom.value, );
     userNom.value = userInfo.value.nom
