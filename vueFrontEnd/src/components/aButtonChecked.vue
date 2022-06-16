@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed, watchEffect } from 'vue';
-const isClicked = ref(false);
+const isClicked = ref(true);
 
 function toggleButton() {
     isClicked.value = !isClicked.value;

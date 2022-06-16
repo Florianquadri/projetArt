@@ -12,37 +12,67 @@ import 'bootstrap/dist/js/bootstrap.min.js';
 import "/node_modules/vue-simple-calendar/dist/style.css";
 /* import 'https://fonts.googleapis.com/css2?family=Material+Icons';
 import 'https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;700&display=swap'; */
-
-//ira dans section affichage
-import { coursChecked, testChecked, eventChecked, devoirChecked } from "./state.js";
 import { MDCRipple } from '@material/ripple';
+import {user, userPrenom, userNom , userClass} from "./state.js";
+
+
+//fetch du role de l'user pour determiner le type
+const {data: userRole} = useFetch('/user/role')
+watchEffect(console.log(userRole.value, "userRole"))
 watchEffect(() => {
-    affichageSelectionne(coursChecked.value, testChecked.value, eventChecked.value, devoirChecked.value);
+  if (userRole.value == "student") {
+    user.value = "student";
+  } else if (userRole.value== "teacher") {
+    user.value = "teacher";
+  } else {
+    user.value = "anonymous";
+  }
+  console.log("user.value", user.value, );
 })
 
+//fetch info user pour avoir classe nom prenom
+const {data: userInfo} = useFetch('/user/info')
+watchEffect(() => {
+   if (user.value == "student") {
+    userClass.value = userInfo.value.classe
+    console.log("userClass.value", userClass.value, );
+    userPrenom.value = userInfo.value.prenom
+    console.log("userPrenom.value", userPrenom.value, );
+    userNom.value = userInfo.value.nom
+    console.log("userNom.value", userNom.value, );
+    
+  } else if (user.value== "teacher") {
+    userClass.value = "Pas de classe"
+    console.log("userPrenom.value", userClass.value, );
+    userPrenom.value = userInfo.value.prenom
+    console.log("userPrenom.value", userPrenom.value, );
+    userNom.value = userInfo.value.nom
+    console.log("userNom.value", userNom.value, );
+
+  } else {
+    userClass.value = "Pas de classe"
+  }
+   })
 
 
+/* const {data: userInfoClasse} = useFetch('/user/info')
+watchEffect(() => {
+  if (userRole.value == "student") {
+    userClass.value = userInfo.value.classe
+    
+  } else if (userRole.value== "teacher") {
+    userClass.value = "Pas de classe"
+  } else {
+    userClass.value = "Pas de classe"
+  }
+  
+  console.log("userClass.value", userClass.value, )
+})
 
-function affichageSelectionne(cours, test, event, devoir) {
-    //fetch uniquement les valeurs true (cours, devoir..)
-    console.log("je veux fetch");
-    if (cours) {
-        console.log("les cours");
-    }
-    if (test) {
-        console.log("les tests");
-    }
-    if (event) {
-        console.log("les events");
-    }
-    if (devoir) {
-        console.log("les devoirs");
-    }
-}
-
-
-
-
+    userPrenom.value = userInfo.value.prenom
+    console.log("userPrenom.value", userPrenom.value, );
+    userNom.value = userInfo.value.nom
+    console.log("userNom.value", userNom.value, ); */
 </script>
 
 <template>
@@ -74,7 +104,6 @@ function affichageSelectionne(cours, test, event, devoir) {
         flex-basis:auto;
         background-color: black;
 }
-
 .body {
     display: flex;
     flex-direction: column;
@@ -84,7 +113,6 @@ function affichageSelectionne(cours, test, event, devoir) {
     padding-left: 10px;
     height: 100%;
 }
-
 @media(min-width:769px) {
     .body {
         margin-left: 15%;
@@ -94,14 +122,12 @@ function affichageSelectionne(cours, test, event, devoir) {
         height: 100%
     }
 }
-
 @media(min-width:993) {
     /*     .body {
   margin-left:10%;
   padding:10px;
 } */
 }
-
 h1 {
     color: white;
 }

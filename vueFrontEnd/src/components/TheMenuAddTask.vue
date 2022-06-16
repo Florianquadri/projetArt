@@ -37,7 +37,7 @@ function hideContainer(event) {
 </script>
 
 <template>
-  <div class="containsTask" :class="mainButtonTaskPushed ? 'active' : ''">
+  <div v-if="user == 'teacher' || user == 'student'" class="containsTask" :class="mainButtonTaskPushed ? 'active' : ''">
     <div class="container">
       <button
         class="add"

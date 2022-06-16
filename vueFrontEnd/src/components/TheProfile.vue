@@ -1,15 +1,14 @@
 <script setup>
 import { ref, computed, watchEffect } from "vue";
-import { user } from "../state.js";
+
 import TheHeaderProfile from "./TheHeaderProfile.vue";
 import { useFetch } from "../composables/fetch.js";
 import { apiHoraireBase } from "../config/horaires.js";
 import aButtonChecked from "./aButtonChecked.vue";
-<<<<<<< Updated upstream
-=======
+
+
 import {user, userClass, userPrenom, userNom } from "../state.js";
-import { showContainerHoraire } from "../state.js";
->>>>>>> Stashed changes
+
 
 const firstLetterName = ref("F");
 const profileIsClicked = ref(false);
@@ -27,7 +26,7 @@ const { data: courses } = useFetch(apiHoraireBase);
       <div>
         <div class = 'img' v-if="user == 'anonymous'">
           
-          <a href="localhost:8000/LAROUTE">
+         <a href="/login">
           <img
           src="../assets/Property1OFFPPic.png"
           alt="ProfilePic"/>
@@ -58,7 +57,25 @@ const { data: courses } = useFetch(apiHoraireBase);
                   <h2 id="title">Infos personelles</h2>
                 </div>
                 <div class="roles">
-                  <p>Rôles :</p>
+                  <h4>Rôles :</h4>
+                  <p v-if="user == 'student'">Elève</p>
+                  <p v-if="user == 'teacher'">Professeur</p>
+
+                 <span class="details"> <h4>Nom :</h4>
+                  <p>{{userNom}}</p>
+                  </span>
+
+                  <span class="details">
+                  <h4>Prenom :</h4>
+                  <p>{{userPrenom}}</p>
+                  </span>
+
+                  <span class="details">
+                  <h4>Classe :</h4>
+                  <p>{{userClass}}</p>
+                  </span>
+                 
+                                                
                 </div>
               </div>
               <div class="personal_notifs">
@@ -157,31 +174,57 @@ h1 {
   margin-bottom: 1.5rem;
 }
 
+button {
+  margin-right: 1.5rem;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+button {
+  margin-right: 1vw;
+}
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+button {
+ margin-right: 1vw;
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+button {
+  margin-right: 34vw;
+}
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+button {
+   margin-right: 51vw;
+}
+}
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+button {
+   margin-right: 51vw;
+}
+}
+
 .error {
   animation-name: errorShake;
   animation-duration: 0.3s;
 }
 
-@keyframes errorShake {
-  0% {
-    transform: translateX(-25px);
-  }
-  25% {
-    transform: translateX(25px);
-  }
-  50% {
-    transform: translateX(-25px);
-  }
-  75% {
-    transform: translateX(25px);
-  }
-  100% {
-    transform: translateX(0);
-  }
+h4 {
+  font-weight: 700;
 }
 
 p {
   margin-right: 10px;
+  margin-bottom: 2rem;
 }
 .task {
   margin-left: 16px;
@@ -201,7 +244,7 @@ li {
 }
 
 .personal_frame {
-  color: #c8c8c8;
+  color: #FFFFFF;
 }
 
 #title {
@@ -221,7 +264,7 @@ li {
 }
 
 .personal_notifs {
-  margin-top: 30vh;
+  margin-top: 6vh;
   text-align: left;
 }
 

@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed, watchEffect } from 'vue';
-import { myClass } from "../state.js";
+import { myClass, classOuPrivateToFetch } from "../state.js";
 
 const props = defineProps({
     classes: {
@@ -10,7 +10,7 @@ const props = defineProps({
     }
 })
 
-const monChoixDeClasse = ref(1);
+const monChoixDeClasse = ref("Horaire teacher"); //valeur liée à agenda du prof ?
 
 const emits = defineEmits([
     'changeClasse'
@@ -18,6 +18,7 @@ const emits = defineEmits([
 
 function onChange(evenement) {
     console.log(monChoixDeClasse.value);
+    classOuPrivateToFetch.value = monChoixDeClasse.value;
     //On y accède de n'importe où dans le framework
     emits('changeClasse', monChoixDeClasse.value);
 }
@@ -25,11 +26,11 @@ function onChange(evenement) {
 
 <template>
     <!--     <h2>Sélection cours / période de temps / que voir exams</h2> -->
-    <div class="container_list">
+    <div class="container_list white">
 
         <label class="white" for="classes-select">Choisis ta classe</label>
-        <select name="heigClasses" id="classes-select" v-model="monChoixDeClasse" @change="onChange($evenement)">
-            <option class="white" value="chooseClass" selected>--Choisis ta classe--</option>
+        <select name="heigClasses" class="white" id="classes-select" v-model="monChoixDeClasse" @change="onChange($evenement)">
+            <option class="white" value="yourPlanning">Your planning</option>
             <option class="white" v-for="classe in classes" :value="classe">{{ classe }}</option>
         </select>
             </div>

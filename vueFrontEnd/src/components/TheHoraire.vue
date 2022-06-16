@@ -1,21 +1,18 @@
 <script setup>
-import { ref, computed, watchEffect } from 'vue';
-import { useFetch } from '../composables/fetch.js';
-import { apiHoraireBase } from "../config/horaires.js"
-import ACourse from './ACourse.vue';
-import aPeriod from './aPeriod.vue';
-import TheSelection from './TheSelection.vue';
-import EventMonthly from './EventMonthly.vue';
-import { page } from "../state.js";
+import { ref, computed, watchEffect, watch } from "vue";
+import { useFetch, useFetchReactive } from "../composables/fetch.js";
+import { apiHoraireBase, baseURL } from "../config/horaires.js";
+import { apiHoraireBasique } from "../config/horaires.js";
+import ACourse from "./ACourse.vue";
+import aPeriod from "./aPeriod.vue";
+import TheSelection from "./TheSelection.vue";
+import EventMonthly from "./EventMonthly.vue";
+import { page} from "../state.js";
 import { myClass } from "../state.js";
-import { user } from "../state.js";
-import TheNextEvent from './TheNextEvent.vue';
+import { user, URLToFetch } from "../state.js";
+import TheNextEvent from "./TheNextEvent.vue";
 import "/node_modules/vue-simple-calendar/dist/style.css";
-<<<<<<< Updated upstream
-import { CalendarView, CalendarViewHeader } from "vue-simple-calendar"
 
-const { data: courses } = useFetch(apiHoraireBase);
-=======
 import { CalendarView, CalendarViewHeader } from "vue-simple-calendar";
 import aButtonChecked from "./aButtonChecked.vue";
 
@@ -26,10 +23,7 @@ import {
   eventChecked,
   devoirChecked,
   classOuPrivateToFetch,
-  showContainerHoraire,
 } from "../state.js";
-
-
 
 const seeHistorique = ref(true);
 function toggleHistorique() {
@@ -65,7 +59,7 @@ const urlDevoir = computed(() => {
   return "";
 });
 const urlClassOrPrivate = computed(() => {
-  if (classOuPrivateToFetch.value != "private")
+  if (classOuPrivateToFetch.value != "yourPlanning")
     return "/horairefiltreClasse/" + myClass.value;
   return "/horairefiltre";
 });
@@ -93,6 +87,10 @@ const urlFinale = computed(() => {
   );
 });
 
+watchEffect(() => {
+  URLToFetch.value = urlFinale.value;
+  console.log(URLToFetch.value)
+})
 const urlAFetch = ref(null);
 const fetchClass = ref(false);
 
@@ -101,126 +99,120 @@ watchEffect(() => {
 });
 
 console.log(apiHoraireBasique);
-const { data: infos } = useFetch("https://abe-pingouin.heig-vd.ch/testflo");
 
-//le fetch = les cases sélectionnées --> fetch réactif (cours, tâches, event, devoir)
-//id, classe, title, startDate, endDate,localisation,typeEvent, description
+const { data: courses } = useFetchReactive(urlFinale);
 
-const { data: courses } = useFetch("https://abe-pingouin.heig-vd.ch/testflo2");
-//gérer bug quand y'a pas de prochaine date
 const { data: allCourses } = useFetch(
   "https://abe-pingouin.heig-vd.ch/horairetoutesclasses"
 );
->>>>>>> Stashed changes
+
 const isClicked = ref(false);
 const eventPopUp = ref("");
-const eventClick=ref("");
+const eventClick = ref("");
 
-
-//set pour obtenir uniquement 1x chaque classe
+//set pour obtenir uniquement 1x chaque classe pour créer un sélecteur de classe
 const tabClasses = computed(() => {
-    if (courses.value?.length > 0) {
-        return Array.from(new Set(courses.value.map(d => d.class)));
-    } else {
-        return [];
-    }
+  if (allCourses.value?.length > 0) {
+    return Array.from(new Set(allCourses.value.map((d) => d.classe))); //d.classe pour le nouveau --> aller chercher toutes le tableau avec tous les cours et classes
+  } else {
+    return [];
+  }
 });
 
-function test2(evt) {
-    console.log(evt);
-}
-
-const datasForClassSelected = computed(() => {
-    if (courses.value?.length > 0) {
-        return courses.value.filter(classe => classe.class == myClass.value);
-    } else {
-        return [];
-    }
-}
-)
-
-const datasForClassSelectedOrderAsc = computed(() => {
-    return datasForClassSelected.value.sort((a, b) => { return new Date(a.start) - new Date(b.start); });
-})
-
-//pour vue mois
-const items = computed(() => {
-    if (datasForClassSelectedOrderAsc.value?.length > 0) {
-        return Array.from(datasForClassSelectedOrderAsc.value.map(d => { return { id: d.id, startDate: d.start, endDate: d.end, title: d.label, room: d.room} }));
-    } else {
-        return [];
-    }
-})
-
-const options1 = { year: "numeric", month: "long", day: "numeric" };
-    const debutCours = computed(() => {
-        if (!eventClick.value) return '';
-        const maDate = new Date(eventClick.value);
-        return new Intl.DateTimeFormat('fr-CH', options1).format(maDate);
+//obtenir uniquement les prochains évents (pour gérer historique + next event)
+const onlyFuturEvent = computed(() => {
+  if (courses.value?.length > 0) {
+    return courses.value.filter((event) => {
+      return dateActuelleIso.value < Date.parse(event.startDate);
     });
+  } else {
+    return [];
+  }
+});
 
-        const tabFiltreEvent = computed(() => {
-        if (items.value?.length > 0) {
-            return items.value.filter(event => {
-                const maDate2 = new Date(event.startDate);
-                const maDate2Final = new Intl.DateTimeFormat('fr-CH', options1).format(maDate2);
-                return maDate2Final == debutCours.value
-            });
-        } else {
-            return [];
-        }
-    })
+//si on veut gérer le click sur chaque événement du calendrier
+function test2(evt) {
+  console.log(evt);
+}
+/* const datasForClassSelected = computed(() => {
+  if (courses.value?.length > 0) {
+    return courses.value.filter((classe) => classe.class == myClass.value);
+  } else {
+    return [];
+  }
+});
 
-//récupérer dans popup info événements du jour
+//tri des évenements
+const datasForClassSelectedOrderAsc = computed(() => {
+  return datasForClassSelected.value.sort((a, b) => {
+    return new Date(a.start) - new Date(b.start);
+  });
+}); */
+
+//Pour gérer la vue calendrier --> datas à envoyer
+const items = computed(() => {
+  if (courses.value?.length > 0) {
+    return Array.from(
+      courses.value.map((d) => {
+        return {
+          id: d.id,
+          startDate: d.startDate,
+          endDate: d.endDate,
+          title: d.title,
+          localisation: d.localisation,
+        };
+      })
+    );
+  } else {
+    return [];
+  }
+});
+
+//option d'affichage des dates comme souhaité (peut être modifié)
+const options1 = { year: "numeric", month: "long", day: "numeric" };
+
+const debutCours = computed(() => {
+  if (!eventClick.value) return "";
+  const maDate = new Date(eventClick.value);
+  return new Intl.DateTimeFormat("fr-CH", options1).format(maDate);
+});
+
+const tabFiltreEvent = computed(() => {
+  if (items.value?.length > 0) {
+    return items.value.filter((event) => {
+      const maDate2 = new Date(event.startDate);
+      const maDate2Final = new Intl.DateTimeFormat("fr-CH", options1).format(
+        maDate2
+      );
+      return maDate2Final == debutCours.value;
+    });
+  } else {
+    return [];
+  }
+});
+
+//récupérer dans popup info événements du jour (formatées)
 function test(evt) {
-    eventClick.value = evt;
-console.log(eventClick.value)
-    console.log(debutCours.value)
-    console.log(tabFiltreEvent.value, "asdf");
-    eventPopUp.value = evt;
-    isClicked.value = !isClicked.value;
+  eventClick.value = evt;
+  console.log(eventClick.value);
+  console.log(debutCours.value);
+  console.log(tabFiltreEvent.value, "asdf");
+  eventPopUp.value = evt;
+  isClicked.value = !isClicked.value;
 }
 
 const showDate = ref(new Date());
 function setShowDate(d) {
-    showDate.value = d;
+  showDate.value = d;
 }
 
-function closeInfos(){
-        isClicked.value = !isClicked.value;
+function closeInfos() {
+  isClicked.value = !isClicked.value;
 }
-//penser à récupérer également les tests inscrit + les éléments persos et merge le tout
-//dans un nouveau tableau à trier selon dates
-//class,label,room,start,end,id
 </script>
 //v-if="user=='teacher'" --> pour la sélection de cours
 <template>
-    <!--     {{ tabClasses[0] }}
-    {{ myClass }} -->
-<<<<<<< Updated upstream
-    <!--     {{ tabClasses }} -->
-    <div class="containerHoraire">
-        <!--         <the-selection v-if="user=='teacher'" @changeClasse="myClass = $event" v-bind:classes=tabClasses></the-selection> -->
-        <!--         <div class="white">{{datasForClassSelectedOrderAsc}}</div> -->
-        <h2>Prochain cours</h2>
-        <a-period v-if="datasForClassSelectedOrderAsc != ''" v-bind:salle="datasForClassSelectedOrderAsc[0].room"
-            v-bind:classe="datasForClassSelectedOrderAsc[0].class"
-            v-bind:dateDebut="datasForClassSelectedOrderAsc[0].start"
-            v-bind:dateFin="datasForClassSelectedOrderAsc[0].end" v-bind:cours="datasForClassSelectedOrderAsc[0].label"
-            firstCours="true" typeEvent="firstCourse" sizeFont="1.5"></a-period>
-        <template v-if="page == 'planning' || page == 'home'">
-            <ul>
-                <li v-for="course in datasForClassSelectedOrderAsc" :key="course.id">
-                    <a-period v-bind:classe="course.class" v-bind:cours="course.label" v-bind:salle="course.room"
-                        v-bind:dateDebut="course.start" v-bind:dateFin="course.end" typeEvent="course">
-                    </a-period>
-                </li>
-            </ul>
-=======
-  <!--     {{ tabClasses }} -->
-  <div class="containerHoraire" v-show="showContainerHoraire">
-    <!--         <the-selection v-if="user=='teacher'" @changeClasse="myClass = $event" v-bind:classes=tabClasses></the-selection> -->
-    <!--         <div class="white">{{datasForClassSelectedOrderAsc}}</div> -->
+
     <h1 class="white" v-if="!onlyFuturEvent[0]">Mon planning</h1>
     <h2 v-if="onlyFuturEvent[0]">Prochain event</h2>
     <a-period
@@ -245,6 +237,25 @@ function closeInfos(){
         @isClicked="toggleHistorique($event)"
       ></a-button-checked>
       <span class="white">Voir l'historique</span>
+
+        </template>
+        <template class="div_calendar" v-if="page == 'mois'" id="app">
+            <h2>Mon calendrier</h2>
+            <calendar-view :items="items" startingDayOfWeek="1" :show-date="showDate" @click-date="test($event)"
+                @click-item="test2($event)" class="theme-default holiday-us-traditional holiday-us-official">
+                <template #header="{ headerProps }">
+                    <calendar-view-header :header-props="headerProps" @input="setShowDate" />
+                </template>
+            </calendar-view>
+            <div class="moreInfo" :class="isClicked ? 'active' : ''">
+            <span class="bar" @click="closeInfos"></span>
+                <div v-for="itemPopUp in tabFiltreEvent" :key="itemPopUp.id" class="event">
+               <event-monthly :startDate="itemPopUp.startDate" :endDate="itemPopUp.endDate" :title="itemPopUp.title" :room="itemPopUp.room"></event-monthly>
+                </div>
+            </div>
+        </template>
+
+
     </div>
     <template v-if="page == 'planning' || page == 'home'">
       <ul>
@@ -255,7 +266,7 @@ function closeInfos(){
             v-bind:salle="course.localisation"
             v-bind:dateDebut="course.startDate"
             v-bind:dateFin="course.endDate"
-            typeEvent="course"
+            v-bind:typeEvent="course.typeEvent"
           >
           </a-period>
         </li>
@@ -276,231 +287,317 @@ function closeInfos(){
             :header-props="headerProps"
             @input="setShowDate"
           />
->>>>>>> Stashed changes
         </template>
-        <template class="div_calendar" v-if="page == 'mois'" id="app">
-            <h2>Mon calendrier</h2>
-            <calendar-view :items="items" startingDayOfWeek="1" :show-date="showDate" @click-date="test($event)"
-                @click-item="test2($event)" class="theme-default holiday-us-traditional holiday-us-official">
-                <template #header="{ headerProps }">
-                    <calendar-view-header :header-props="headerProps" @input="setShowDate" />
-                </template>
-            </calendar-view>
-            <div class="moreInfo" :class="isClicked ? 'active' : ''">
-            <span class="bar" @click="closeInfos"></span>
-                <div v-for="itemPopUp in tabFiltreEvent" :key="itemPopUp.id" class="event">
-               <event-monthly :startDate="itemPopUp.startDate" :endDate="itemPopUp.endDate" :title="itemPopUp.title" :room="itemPopUp.room"></event-monthly>
-                </div>
-            </div>
-        </template>
-    </div>
-    <!-- v-for="(item, index) in items" -->
-
+      </calendar-view>
+      <div class="moreInfo" :class="isClicked ? 'active' : ''">
+        <span class="bar" @click="closeInfos"></span>
+        <div
+          v-for="itemPopUp in tabFiltreEvent"
+          :key="itemPopUp.id"
+          class="event"
+        >
+          <event-monthly
+            :startDate="itemPopUp.startDate"
+            :endDate="itemPopUp.endDate"
+            :title="itemPopUp.title"
+            :room="itemPopUp.room"
+          ></event-monthly>
+        </div>
+      </div>
+    </template>
+  </div>
 </template>
 
 <style>
+
+h1{
+    margin:10px 5px 20px 5px;
+}
+
+h2{
+    padding:5px;
+}
 .today {
-    background-color: #6BA2FF;
-    color: white;
-    border-radius: 5px;
+  background-color: #6ba2ff;
+  color: white;
+  border-radius: 5px;
 }
 
 .past {
-    background-color: #262626;
-    color: white;
+  background-color: #262626;
+  color: white;
 }
 
 .future {
-    background-color: #262626;
-    color: white;
+  background-color: #262626;
+  color: white;
 }
 
 .previousYear {
-    display: none;
+  display: none;
 }
 
 button.previousPeriod {
-    background-color: #262626;
-    border: 1px solid black;
-    border-color: black;
-    border-radius: 10px;
-    color: white;
+  background-color: #262626;
+  border: 1px solid black;
+  border-color: black;
+  border-radius: 10px;
+  color: white;
 }
 
 button.nextPeriod {
-    background-color: #262626;
-    border: 1px solid black;
-    border-color: black;
-    border-radius: 10px;
-    color: white;
+  background-color: #262626;
+  border: 1px solid black;
+  border-color: black;
+  border-radius: 10px;
+  color: white;
 }
 
 button.nextYear {
-    display: none;
+  display: none;
 }
 
 .cv-weeks {
-    position: relative;
-    min-height: 500px;
-    z-index: 1;
-    background-color: #262626;
-    border-color: black;
-    border-radius: 0px 0px 10px 10px;
+  position: relative;
+  min-height: 500px;
+  z-index: 1;
+  background-color: #262626;
+  border-color: black;
+  border-radius: 0px 0px 10px 10px;
 }
 
 button.currentPeriod {
-    /*     background-color: #262626;
+  /*     background-color: #262626;
     color:white;
     border: 1px solid black;
     border-color: black;
     border-radius: 10px; */
-    display: none;
+  display: none;
 }
 
 .cv-header {
-    border-color: #262626;
-    border-radius: 10px 10px 0px 0px;
-    background-color: black;
+  border-color: #262626;
+  border-radius: 10px 10px 0px 0px;
+  background-color: black;
 }
 
 .cv-header-days {
-    border-color: #262626;
+  border-color: #262626;
 }
 
 .periodLabel {
-    color: white;
+  color: white;
 }
 
 .cv-header-day {
-    background-color: #262626;
-    color: #6BA2FF;
-    border-color: transparent;
+  background-color: #262626;
+  color: #6ba2ff;
+  border-color: transparent;
 }
 
 div.cv-day {
-    border-color: transparent;
-    display: flex;
-    justify-content: center;
-    text-align: center;
+  border-color: transparent;
+  display: flex;
+  justify-content: center;
+  text-align: center;
 }
 
-.cv-day-number {}
+.cv-day-number {
+}
 
 .cv-item {
-    background-color: #84F4BF;
-    color: black;
-    border-radius: 10px;
-    border-color: black;
+  background-color: #84f4bf;
+  color: black;
+  border-radius: 10px;
+  border-color: black;
 }
 </style>
 
 <style scoped>
+.historique {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  margin-left:75px;
+}
+
+div.historique span {
+    margin-left:10px;
+}
 .enTeteHoraire {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    background-color: #60E1E0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: #60e1e0;
 }
 
 .bar {
-    width: 50px;
-    text-align: center;
-    height:100%;
-    height: 5px;
-    margin: 0px auto 10px auto;
-    background-color: white;
-    border-radius: 5px;
-
+  width: 50px;
+  text-align: center;
+  height: 100%;
+  height: 5px;
+  margin: 0px auto 10px auto;
+  background-color: white;
+  border-radius: 5px;
 }
 
 .lignee {
-    justify-content: space-between;
+  justify-content: space-between;
 }
 
 .bodyTable {
-    background-color: #262626;
+  background-color: #262626;
 }
 
 .containerHoraire {
-    /*     margin:1rem; */
-    display: flex;
-    width: 100%;
-    flex-direction: column;
-    justify-content: center;
-    flex-grow: 1;
+  /*     margin:1rem; */
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  flex-grow: 1;
 }
 
 .thead {
-    flex-basis: 1;
+  flex-basis: 1;
 }
 
 h2 {
-    color: white;
+  color: white;
 }
 
 li {
-    list-style: none;
+  list-style: none;
 }
 
 ul {
-    margin: 0px;
-    padding: 5px;
+  margin: 0px;
+  padding: 5px;
 }
 
 .white {
-    color: white;
+  color: white;
 }
 
 .firstCours {
-    width: 100%;
+  width: 100%;
 }
 
 #app {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    color: #2c3e50;
-    height: 67vh;
-    width: 90vw;
-    margin-left: auto;
-    margin-right: auto;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  color: #2c3e50;
+  height: 67vh;
+  width: 90vw;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .dowX {
-    color: white;
+  color: white;
 }
 
 div.moreInfo {
-    position: fixed;
-    display: flex;
-    flex-direction: column;
-    z-index: 2;
-    bottom: -280px;
-    text-align: center;
-    width: 95%;
-    margin: auto;
-    height: 280px;
-    justify-content: flex-start;
-    background-color: #606060;
-    padding:10px;
-    opacity: 0;
-    border-radius: 10px;
-    border: 1px solid black;
-    transition: 0.3s;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  z-index: 2;
+  bottom: -280px;
+  text-align: center;
+  width: 95%;
+  margin: auto;
+  height: 280px;
+  justify-content: flex-start;
+  background-color: #606060;
+  padding: 10px;
+  opacity: 0;
+  border-radius: 10px;
+  border: 1px solid black;
+  transition: 0.3s;
 }
 
 div.moreInfo.active {
-
-    z-index: 2;
-    bottom: 15px;
-    border-top: 1px solid #E7F0FF;
-    opacity: 1;
-
+  z-index: 2;
+  bottom: 15px;
+  border-top: 1px solid #e7f0ff;
+  opacity: 1;
 }
 
-div.event{
-    margin-bottom:10px;
+div.event {
+  margin-bottom: 10px;
 }
 
 /* .div_calendar{
     margin:20px;
 } */
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+  div.moreInfo {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  z-index: 2;
+  bottom: -280px;
+  text-align: center;
+  width: 97%;
+  margin: auto;
+  height: 280px;
+  justify-content: flex-start;
+  background-color: #606060;
+  padding: 10px;
+  opacity: 0;
+  border-radius: 10px;
+  border: 1px solid black;
+  transition: 0.3s;
+}
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+  div.moreInfo {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  z-index: 2;
+  bottom: -280px;
+  text-align: center;
+  width: 82%;
+  margin: auto;
+  height: 280px;
+  justify-content: flex-start;
+  background-color: #606060;
+  padding: 10px;
+  opacity: 0;
+  border-radius: 10px;
+  border: 1px solid black;
+  transition: 0.3s;
+}
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+    div.moreInfo {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  z-index: 2;
+  bottom: -280px;
+  text-align: center;
+  width: 84%;
+  margin: auto;
+  height: 280px;
+  justify-content: flex-start;
+  background-color: #606060;
+  padding: 10px;
+  opacity: 0;
+  border-radius: 10px;
+  border: 1px solid black;
+  transition: 0.3s;
+}
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {}
 </style>

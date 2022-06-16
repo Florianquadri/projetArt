@@ -3,16 +3,16 @@ import { ref, computed, watchEffect } from 'vue';
 import TheBurger from './TheBurger.vue';
 import TheProfile from './TheProfile.vue';
 import TheSelection from './TheSelection.vue';
-import { user } from "../state.js";
+import { user} from "../state.js";
 import { useFetch } from '../composables/fetch.js';
 import { apiHoraireBase } from "../config/horaires.js"
-import { myClass } from "../state.js";
+import { myClass, urlFinale } from "../state.js";
 
-const { data: courses } = useFetch(apiHoraireBase);
+const { data: allCourses } = useFetch("https://abe-pingouin.heig-vd.ch/horairetoutesclasses");
 
 const tabClasses = computed(() => {
-    if (courses.value?.length > 0) {
-        return Array.from(new Set(courses.value.map(d => d.class)));
+    if (allCourses.value?.length > 0) {
+        return Array.from(new Set(allCourses.value.map(d => d.classe)));
     } else {
         return [];
     }
@@ -23,7 +23,7 @@ const tabClasses = computed(() => {
 <template>
     <div class="container_header">
         <the-burger></the-burger>
-                <the-selection v-if="user=='teacher'" @changeClasse="myClass = $event" v-bind:classes=tabClasses></the-selection>
+                <the-selection v-if="user=='teacher' || user=='anonymous'" @changeClasse="myClass = $event" v-bind:classes=tabClasses></the-selection>
         <the-profile></the-profile>
     </div>
 </template>
