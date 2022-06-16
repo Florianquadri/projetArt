@@ -7,7 +7,7 @@ import ACourse from "./ACourse.vue";
 import aPeriod from "./aPeriod.vue";
 import TheSelection from "./TheSelection.vue";
 import EventMonthly from "./EventMonthly.vue";
-import { page } from "../state.js";
+import { page, urlFinale } from "../state.js";
 import { myClass } from "../state.js";
 import { user } from "../state.js";
 import TheNextEvent from "./TheNextEvent.vue";

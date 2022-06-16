@@ -6,9 +6,9 @@ import TheSelection from './TheSelection.vue';
 import { user } from "../state.js";
 import { useFetch } from '../composables/fetch.js';
 import { apiHoraireBase } from "../config/horaires.js"
-import { myClass } from "../state.js";
+import { myClass, urlFinale } from "../state.js";
 
-const { data: courses } = useFetch(apiHoraireBase);
+const { data: courses } = useFetch(urlFinale.value);
 
 const tabClasses = computed(() => {
     if (allCourses.value?.length > 0) {
