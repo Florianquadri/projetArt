@@ -8,11 +8,48 @@ export default defineConfig({
 })
  */
 
+/* import { VitePWA } from 'vite-plugin-pwa'
+
+export default {
+  plugins: [
+    VitePWA()
+  ]
+} */
+import { VitePWA } from 'vite-plugin-pwa'
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 export default defineConfig(({ command, mode }) => {
   const config = {
-    plugins: [vue({})],
+    plugins: [vue({}),VitePWA({  
+     
+            includeAssets: ['favicon.svg', 'favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
+            manifest: {
+              name: 'Abe - Horraire',
+              short_name: 'Abe',
+              description: 'Apllication horraire pour ingenierie media',
+              theme_color: '#ffffff',
+              icons: [
+                {
+                  src: 'pwa-192x192.png',
+                  sizes: '192x192',
+                  type: 'image/png',
+                },
+                {
+                  src: 'pwa-512x512.png',
+                  sizes: '512x512',
+                  type: 'image/png',
+                },
+                {
+                  src: 'pwa-512x512.png',
+                  sizes: '512x512',
+                  type: 'image/png',
+                  purpose: 'any maskable',
+                }
+              ]
+            }
+          })
+        ]
+,
     base: ''
   };
   // define specific env configuration
