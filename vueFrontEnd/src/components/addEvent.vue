@@ -43,25 +43,25 @@ const errorClassChosen = ref(false);
 
 const event = computed(() => {
   if (props.typeEvent == "private") {
-    return "Perso";
+    return "perso";
   }
   if (
     props.typeEvent == "myClassEvent" &&
     chooseClassTaskForStudent.value == "Devoir"
   ) {
-    return "Devoir";
+    return "devoir";
   }
   if (
     props.typeEvent == "myClassEvent" &&
     chooseClassTaskForStudent.value == "Autre"
   ) {
-    return "Autre";
+    return "autre";
   }
   if (props.typeEvent == "test") {
-    return "Test";
+    return "test";
   }
   if (props.typeEvent == "academic") {
-    return "Académique";
+    return "académique";
   }
 });
 const forWhichClassEvent = computed(() => {
