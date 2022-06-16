@@ -7,7 +7,7 @@ import ACourse from "./ACourse.vue";
 import aPeriod from "./aPeriod.vue";
 import TheSelection from "./TheSelection.vue";
 import EventMonthly from "./EventMonthly.vue";
-import { page, urlFinale } from "../state.js";
+import { page} from "../state.js";
 import { myClass } from "../state.js";
 import { user, URLToFetch } from "../state.js";
 import TheNextEvent from "./TheNextEvent.vue";
@@ -88,6 +88,7 @@ const urlFinale = computed(() => {
 
 watchEffect(() => {
   URLToFetch.value = urlFinale.value;
+  console.log(urlURLToFetch.value)
 })
 const urlAFetch = ref(null);
 const fetchClass = ref(false);
