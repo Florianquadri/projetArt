@@ -113,7 +113,7 @@ const eventClick = ref("");
 
 //set pour obtenir uniquement 1x chaque classe
 const tabClasses = computed(() => {
-  if (courses.value?.length > 0) {
+  if (allCourses.value?.length > 0) {
     return Array.from(new Set(allCourses.value.map((d) => d.classe))); //d.classe pour le nouveau --> aller chercher toutes le tableau avec tous les cours et classes
   } else {
     return [];

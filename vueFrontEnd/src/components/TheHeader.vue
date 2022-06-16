@@ -11,8 +11,8 @@ import { myClass } from "../state.js";
 const { data: courses } = useFetch(apiHoraireBase);
 
 const tabClasses = computed(() => {
-    if (courses.value?.length > 0) {
-        return Array.from(new Set(courses.value.map(d => d.class)));
+    if (allCourses.value?.length > 0) {
+        return Array.from(new Set(allCourses.value.map(d => d.class)));
     } else {
         return [];
     }
