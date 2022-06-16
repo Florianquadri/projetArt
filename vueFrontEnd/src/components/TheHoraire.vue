@@ -225,9 +225,10 @@ function closeInfos() {
   <div class="containerHoraire">
     <!--         <the-selection v-if="user=='teacher'" @changeClasse="myClass = $event" v-bind:classes=tabClasses></the-selection> -->
     <!--         <div class="white">{{datasForClassSelectedOrderAsc}}</div> -->
-    <h2>Prochain cours</h2>
+    <h1 class="white" v-if="!onlyFuturEvent[0]">Mon planning</h1>
+    <h2 v-if="onlyFuturEvent[0]">Prochain event</h2>
     <a-period
-      v-if="courses"
+      v-if="onlyFuturEvent[0]"
       v-bind:salle="onlyFuturEvent[0].localisation"
       v-bind:classe="onlyFuturEvent[0].classe"
       v-bind:dateDebut="onlyFuturEvent[0].startDate"
@@ -302,6 +303,14 @@ function closeInfos() {
 </template>
 
 <style>
+
+h1{
+    margin:10px 5px 20px 5px;
+}
+
+h2{
+    padding:5px;
+}
 .today {
   background-color: #6ba2ff;
   color: white;
@@ -514,4 +523,75 @@ div.event {
 /* .div_calendar{
     margin:20px;
 } */
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+  div.moreInfo {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  z-index: 2;
+  bottom: -280px;
+  text-align: center;
+  width: 97%;
+  margin: auto;
+  height: 280px;
+  justify-content: flex-start;
+  background-color: #606060;
+  padding: 10px;
+  opacity: 0;
+  border-radius: 10px;
+  border: 1px solid black;
+  transition: 0.3s;
+}
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+  div.moreInfo {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  z-index: 2;
+  bottom: -280px;
+  text-align: center;
+  width: 82%;
+  margin: auto;
+  height: 280px;
+  justify-content: flex-start;
+  background-color: #606060;
+  padding: 10px;
+  opacity: 0;
+  border-radius: 10px;
+  border: 1px solid black;
+  transition: 0.3s;
+}
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+    div.moreInfo {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  z-index: 2;
+  bottom: -280px;
+  text-align: center;
+  width: 84%;
+  margin: auto;
+  height: 280px;
+  justify-content: flex-start;
+  background-color: #606060;
+  padding: 10px;
+  opacity: 0;
+  border-radius: 10px;
+  border: 1px solid black;
+  transition: 0.3s;
+}
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {}
 </style>
