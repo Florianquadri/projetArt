@@ -5,6 +5,11 @@ import TheHeaderProfile from "./TheHeaderProfile.vue";
 import { useFetch } from "../composables/fetch.js";
 import { apiHoraireBase } from "../config/horaires.js";
 import aButtonChecked from "./aButtonChecked.vue";
+<<<<<<< Updated upstream
+=======
+import {user, userClass, userPrenom, userNom } from "../state.js";
+import { showContainerHoraire } from "../state.js";
+>>>>>>> Stashed changes
 
 const firstLetterName = ref("F");
 const profileIsClicked = ref(false);

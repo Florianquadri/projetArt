@@ -50,10 +50,7 @@ function affichageSelectionne(cours, test, event, devoir) {
     @include fab.core-styles;
  -->
 
-    <head>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    </head>
-
+  
     <div class="app">
         <the-header></the-header>
         <div class="body">
@@ -81,10 +78,10 @@ function affichageSelectionne(cours, test, event, devoir) {
 .body {
     display: flex;
     flex-direction: column;
-    margin-top: 70px;
     background-color: black;
             flex-basis:auto;
-    padding: 10px;
+    padding-right: 10px;
+    padding-left: 10px;
     height: 100%;
 }
 

@@ -11,9 +11,107 @@ import { myClass } from "../state.js";
 import { user } from "../state.js";
 import TheNextEvent from './TheNextEvent.vue';
 import "/node_modules/vue-simple-calendar/dist/style.css";
+<<<<<<< Updated upstream
 import { CalendarView, CalendarViewHeader } from "vue-simple-calendar"
 
 const { data: courses } = useFetch(apiHoraireBase);
+=======
+import { CalendarView, CalendarViewHeader } from "vue-simple-calendar";
+import aButtonChecked from "./aButtonChecked.vue";
+
+//ira dans section affichage
+import {
+  coursChecked,
+  testChecked,
+  eventChecked,
+  devoirChecked,
+  classOuPrivateToFetch,
+  showContainerHoraire,
+} from "../state.js";
+
+
+
+const seeHistorique = ref(true);
+function toggleHistorique() {
+  seeHistorique.value = !seeHistorique.value;
+}
+
+const dataToFetch = computed(() => {
+    if (seeHistorique.value){
+        return courses.value;
+    }
+    return onlyFuturEvent.value;
+})
+
+const dateActuelle = ref(new Date());
+const dateActuelleIso = computed(() => {
+  return Date.parse(dateActuelle.value.toISOString());
+});
+
+const urlCours = computed(() => {
+  if (coursChecked.value) return "/course";
+  return "";
+});
+const urlTest = computed(() => {
+  if (testChecked.value) return "/test";
+  return "";
+});
+const urlEvent = computed(() => {
+  if (eventChecked.value) return "/event";
+  return "";
+});
+const urlDevoir = computed(() => {
+  if (devoirChecked.value) return "/devoir";
+  return "";
+});
+const urlClassOrPrivate = computed(() => {
+  if (classOuPrivateToFetch.value != "private")
+    return "/horairefiltreClasse/" + myClass.value;
+  return "/horairefiltre";
+});
+
+const smthSelected = computed(() => {
+  if (
+    !coursChecked.value &&
+    !testChecked.value &&
+    !eventChecked.value &&
+    !devoirChecked.value
+  )
+    return "/course";
+  return "";
+});
+
+const urlFinale = computed(() => {
+  return (
+    baseURL +
+    urlClassOrPrivate.value +
+    urlCours.value +
+    urlTest.value +
+    urlEvent.value +
+    urlDevoir.value +
+    smthSelected.value
+  );
+});
+
+const urlAFetch = ref(null);
+const fetchClass = ref(false);
+
+watchEffect(() => {
+  console.log(urlFinale.value);
+});
+
+console.log(apiHoraireBasique);
+const { data: infos } = useFetch("https://abe-pingouin.heig-vd.ch/testflo");
+
+//le fetch = les cases sélectionnées --> fetch réactif (cours, tâches, event, devoir)
+//id, classe, title, startDate, endDate,localisation,typeEvent, description
+
+const { data: courses } = useFetch("https://abe-pingouin.heig-vd.ch/testflo2");
+//gérer bug quand y'a pas de prochaine date
+const { data: allCourses } = useFetch(
+  "https://abe-pingouin.heig-vd.ch/horairetoutesclasses"
+);
+>>>>>>> Stashed changes
 const isClicked = ref(false);
 const eventPopUp = ref("");
 const eventClick=ref("");
@@ -99,6 +197,7 @@ function closeInfos(){
 <template>
     <!--     {{ tabClasses[0] }}
     {{ myClass }} -->
+<<<<<<< Updated upstream
     <!--     {{ tabClasses }} -->
     <div class="containerHoraire">
         <!--         <the-selection v-if="user=='teacher'" @changeClasse="myClass = $event" v-bind:classes=tabClasses></the-selection> -->
@@ -117,6 +216,67 @@ function closeInfos(){
                     </a-period>
                 </li>
             </ul>
+=======
+  <!--     {{ tabClasses }} -->
+  <div class="containerHoraire" v-show="showContainerHoraire">
+    <!--         <the-selection v-if="user=='teacher'" @changeClasse="myClass = $event" v-bind:classes=tabClasses></the-selection> -->
+    <!--         <div class="white">{{datasForClassSelectedOrderAsc}}</div> -->
+    <h1 class="white" v-if="!onlyFuturEvent[0]">Mon planning</h1>
+    <h2 v-if="onlyFuturEvent[0]">Prochain event</h2>
+    <a-period
+      v-if="onlyFuturEvent[0]"
+      v-bind:salle="onlyFuturEvent[0].localisation"
+      v-bind:classe="onlyFuturEvent[0].classe"
+      v-bind:dateDebut="onlyFuturEvent[0].startDate"
+      v-bind:dateFin="onlyFuturEvent[0].endDate"
+      v-bind:cours="onlyFuturEvent[0].title"
+      firstCours="true"
+      typeEvent="firstCourse"
+      sizeFont="1.5"
+    ></a-period>
+    <div class="historique" v-if="page=='planning' || page=='home'">
+      <a-button-checked
+        baseColor="transparent"
+        hoverColor="grey"
+        selectedColor="#84F4BF"
+        baseBorderColor="#84F4BF"
+        selectedBorderColor="#84F4BF"
+        value="cours"
+        @isClicked="toggleHistorique($event)"
+      ></a-button-checked>
+      <span class="white">Voir l'historique</span>
+    </div>
+    <template v-if="page == 'planning' || page == 'home'">
+      <ul>
+        <li v-for="course in dataToFetch" :key="course.id">
+          <a-period
+            v-bind:classe="course.classe"
+            v-bind:cours="course.title"
+            v-bind:salle="course.localisation"
+            v-bind:dateDebut="course.startDate"
+            v-bind:dateFin="course.endDate"
+            typeEvent="course"
+          >
+          </a-period>
+        </li>
+      </ul>
+    </template>
+    <template class="div_calendar" v-if="page == 'mois'" id="app">
+      <h2>Mon calendrier</h2>
+      <calendar-view
+        :items="items"
+        :startingDayOfWeek="1"
+        :show-date="showDate"
+        @click-date="test($event)"
+        @click-item="test2($event)"
+        class="theme-default holiday-us-traditional holiday-us-official"
+      >
+        <template #header="{ headerProps }">
+          <calendar-view-header
+            :header-props="headerProps"
+            @input="setShowDate"
+          />
+>>>>>>> Stashed changes
         </template>
         <template class="div_calendar" v-if="page == 'mois'" id="app">
             <h2>Mon calendrier</h2>

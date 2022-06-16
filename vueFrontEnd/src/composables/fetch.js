@@ -10,7 +10,6 @@ export function useFetch(url, data = null) {
   }
 
   loadJson();
-console.log(data);
   return { data }
 
 
