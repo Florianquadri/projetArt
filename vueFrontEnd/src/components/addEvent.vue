@@ -240,10 +240,14 @@ function validateAddTask() {
 
     //fetch post envoi des datas au back-end
 
-         fetch('https://abe-pingouin.heig-vd.ch/api/taches', {
-            method:"POST",
-            body:JSON.stringify(datasForLaravel)
-    }) 
+    fetch("https://abe-pingouin.heig-vd.ch/api/taches", {
+      method: "POST",
+      headers: {
+        "Accept": "application/json",
+        "Authorization": "application/json"
+      },
+      body: JSON.stringify(datasForLaravel),
+    });
 
     console.log(datasForLaravel);
     emits("closeAddTask", isFinished.value);
@@ -268,7 +272,7 @@ function validateAddTask() {
       <a-button-menu-task
         @click.prevent="validateAddTask"
         icon="done"
-                baseColor="#C8C8C8"
+        baseColor="#C8C8C8"
         backgroundColor="#262626"
       ></a-button-menu-task>
     </div>
@@ -365,7 +369,7 @@ function validateAddTask() {
           <select
             name="typeTask"
             id="task-select"
-             class="select"
+            class="select"
             v-model="chooseClassTaskForStudent"
           >
             <option class="white" selected>Devoir</option>
@@ -374,8 +378,13 @@ function validateAddTask() {
         </div>
         <div v-if="props.typeEvent == 'test'" class="choose">
           <label class="white" for="classe-select">Choisis la classe</label>
-          <select name="heigClasses" id="classe-select" class="select" v-model="classChosen">
-<!--             <option class="white" value="chooseClass" selected>
+          <select
+            name="heigClasses"
+            id="classe-select"
+            class="select"
+            v-model="classChosen"
+          >
+            <!--             <option class="white" value="chooseClass" selected>
               --Choisis ta classe--
             </option> -->
             <option class="white" v-for="classe in tabClasses" :value="classe">
@@ -401,7 +410,7 @@ function validateAddTask() {
   background-color: #262626;
   border-radius: 10px;
   color: white;
-/*   max-width:60px; */
+  /*   max-width:60px; */
 }
 .active {
   color: #a9ffd6;
@@ -477,21 +486,21 @@ p.middle {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  padding:5px;
+  padding: 5px;
 }
 
 div.row {
   display: flex;
   flex-direction: row nowrap;
   justify-content: flex-start;
-  flex-basis:auto;
+  flex-basis: auto;
 }
 
-div.choose{
-  display:flex;
+div.choose {
+  display: flex;
   flex-direction: column;
-  padding:15px 50px;
-  flex-grow:2;
-  margin:auto;
+  padding: 15px 50px;
+  flex-grow: 2;
+  margin: auto;
 }
 </style>
