@@ -22,29 +22,24 @@ export default defineConfig(({ command, mode }) => {
   const config = {
     plugins: [vue({}),VitePWA({  
      
-            includeAssets: ['favicon.svg', 'favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
+            includeAssets: ['favicon.svg', 'favicon.ico', 'robots.txt', 'danieliaIcon.png'],
             manifest: {
-              name: 'Abe - Horraire',
+              name: 'Comem Aleur',
               short_name: 'Abe',
-              description: 'Apllication horraire pour ingenierie media',
+              description: 'Apllication horraire pour toujours arriver a l heure',
               theme_color: '#ffffff',
               icons: [
                 {
-                  src: 'pwa-192x192.png',
+                  src: '/src/assets/pwa-192x192.png',
                   sizes: '192x192',
                   type: 'image/png',
                 },
                 {
-                  src: 'pwa-512x512.png',
+                  src: '/src/assets/pwa-512x512.png',
                   sizes: '512x512',
                   type: 'image/png',
                 },
-                {
-                  src: 'pwa-512x512.png',
-                  sizes: '512x512',
-                  type: 'image/png',
-                  purpose: 'any maskable',
-                }
+                
               ]
             }
           })
