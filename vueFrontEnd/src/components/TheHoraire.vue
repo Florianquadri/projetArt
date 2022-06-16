@@ -58,7 +58,7 @@ const urlDevoir = computed(() => {
   return "";
 });
 const urlClassOrPrivate = computed(() => {
-  if (classOuPrivateToFetch.value != "private")
+  if (classOuPrivateToFetch.value != "yourPlanning")
     return "/horairefiltreClasse/" + myClass.value;
   return "/horairefiltre";
 });

@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed, watchEffect } from 'vue';
-import { myClass } from "../state.js";
+import { myClass, classOuPrivateToFetch } from "../state.js";
 
 const props = defineProps({
     classes: {
@@ -17,7 +17,8 @@ const emits = defineEmits([
 ]);
 
 function onChange(evenement) {
-    console.log(monChoixDeClasse.value, "testYeric");
+    console.log(monChoixDeClasse.value);
+    classOuPrivateToFetch.value = monChoixDeClasse.value;
     //On y accède de n'importe où dans le framework
     emits('changeClasse', monChoixDeClasse.value);
 }
