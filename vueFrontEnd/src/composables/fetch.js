@@ -1,4 +1,4 @@
-import { ref } from "vue";
+import { ref, watchEffect } from "vue";
 
 export function useFetch(url, data = null) {
   if (data === null) {data = ref(null)};
@@ -24,8 +24,6 @@ export function useFetchReactive(url, data = null) {
     const json = await res.json();
     data.value = json;
   }
-
-  loadJson();
 
   watchEffect(()=>{
     loadJson(url.value);
