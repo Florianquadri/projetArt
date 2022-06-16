@@ -17,7 +17,7 @@ const emits = defineEmits([
 ]);
 
 function onChange(evenement) {
-    console.log(monChoixDeClasse.value);
+    console.log(monChoixDeClasse.value, "testYeric");
     //On y accède de n'importe où dans le framework
     emits('changeClasse', monChoixDeClasse.value);
 }
@@ -29,7 +29,7 @@ function onChange(evenement) {
 
         <label class="white" for="classes-select">Choisis ta classe</label>
         <select name="heigClasses" class="white" id="classes-select" v-model="monChoixDeClasse" @change="onChange($evenement)">
-            <option class="white" value="chooseClass">Your planning</option>
+            <option class="white" value="yourPlanning">Your planning</option>
             <option class="white" v-for="classe in classes" :value="classe">{{ classe }}</option>
         </select>
             </div>

@@ -58,7 +58,7 @@ const event = computed(() => {
     return "Autre";
   }
   if (props.typeEvent == "test") {
-    return "Examen";
+    return "Test";
   }
   if (props.typeEvent == "academic") {
     return "Académique";
