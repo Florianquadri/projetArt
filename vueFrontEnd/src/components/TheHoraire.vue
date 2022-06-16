@@ -132,8 +132,6 @@ const onlyFuturEvent = computed(() => {
 function test2(evt) {
   console.log(evt);
 }
-
-
 /* const datasForClassSelected = computed(() => {
   if (courses.value?.length > 0) {
     return courses.value.filter((classe) => classe.class == myClass.value);
@@ -149,7 +147,7 @@ const datasForClassSelectedOrderAsc = computed(() => {
   });
 }); */
 
-//pour vue mois
+//Pour gérer la vue calendrier --> datas à envoyer
 const items = computed(() => {
   if (courses.value?.length > 0) {
     return Array.from(
@@ -163,13 +161,12 @@ const items = computed(() => {
         };
       })
     );
-    //return d.id, d.startDate, d.endDate, d.title, d.localisation
   } else {
     return [];
   }
 });
 
-//option d'affichage des dates comme souhaité
+//option d'affichage des dates comme souhaité (peut être modifié)
 const options1 = { year: "numeric", month: "long", day: "numeric" };
 
 const debutCours = computed(() => {
@@ -192,7 +189,7 @@ const tabFiltreEvent = computed(() => {
   }
 });
 
-//récupérer dans popup info événements du jour
+//récupérer dans popup info événements du jour (formatées)
 function test(evt) {
   eventClick.value = evt;
   console.log(eventClick.value);
@@ -210,18 +207,10 @@ function setShowDate(d) {
 function closeInfos() {
   isClicked.value = !isClicked.value;
 }
-//penser à récupérer également les tests inscrit + les éléments persos et merge le tout
-//dans un nouveau tableau à trier selon dates
-//class,label,room,start,end,id
 </script>
 //v-if="user=='teacher'" --> pour la sélection de cours
 <template>
-  <!--     {{ tabClasses[0] }}
-    {{ myClass }} -->
-  <!--     {{ tabClasses }} -->
   <div class="containerHoraire">
-    <!--         <the-selection v-if="user=='teacher'" @changeClasse="myClass = $event" v-bind:classes=tabClasses></the-selection> -->
-    <!--         <div class="white">{{datasForClassSelectedOrderAsc}}</div> -->
     <h1 class="white" v-if="!onlyFuturEvent[0]">Mon planning</h1>
     <h2 v-if="onlyFuturEvent[0]">Prochain event</h2>
     <a-period
@@ -256,7 +245,7 @@ function closeInfos() {
             v-bind:salle="course.localisation"
             v-bind:dateDebut="course.startDate"
             v-bind:dateFin="course.endDate"
-            typeEvent="course"
+            v-bind:typeEvent="course.typeEvent"
           >
           </a-period>
         </li>
@@ -296,7 +285,6 @@ function closeInfos() {
       </div>
     </template>
   </div>
-  <!-- v-for="(item, index) in items" -->
 </template>
 
 <style>
