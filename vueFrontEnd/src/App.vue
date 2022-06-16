@@ -15,7 +15,10 @@ import 'https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;700
 import { MDCRipple } from '@material/ripple';
 import {user, userClass, userPrenom, userNom } from "./state.js";
 
-/* const {data: userRole} = useFetch('https://abe-pingouin.heig-vd.ch/user/role')
+/* const {data: userRole} = useFetch('/api/user/role')
+watchEffect(console.log(userRole.value, "userRole")) */
+
+const {data: userRole} = useFetch('/api/user/role')
 watchEffect(console.log(userRole.value, "userRole"))
 watchEffect(() => {
   if (userRole.value == "student") {
@@ -29,7 +32,7 @@ watchEffect(() => {
 })
 
 
-const {data: userInfo} = useFetch('https://abe-pingouin.heig-vd.ch/user/info')
+/* const {data: userInfo} = useFetch('/api/user/info')
 watchEffect(() => {
  
     userClass.value = userInfo.value.classe
@@ -37,9 +40,10 @@ watchEffect(() => {
     userPrenom.value = userInfo.value.prenom
     console.log("userPrenom.value", userPrenom.value, );
     userNom.value = userInfo.value.nom
+
     console.log("userNom.value", userNom.value, );
-   })
- */
+   }) */
+
 
 </script>
 
