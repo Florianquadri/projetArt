@@ -88,7 +88,7 @@ const urlFinale = computed(() => {
 
 watchEffect(() => {
   URLToFetch.value = urlFinale.value;
-  console.log(urlURLToFetch.value)
+  console.log(URLToFetch.value)
 })
 const urlAFetch = ref(null);
 const fetchClass = ref(false);
