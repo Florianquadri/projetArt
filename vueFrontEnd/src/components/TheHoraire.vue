@@ -94,7 +94,7 @@ watchEffect(() => {
 });
 
 console.log(apiHoraireBasique);
-const { data: infos } = useFetch("https://abe-pingouin.heig-vd.ch/testflo2");
+const { data: infos } = useFetch("https://abe-pingouin.heig-vd.ch/testflo");
 watchEffect(() => {
   console.log(infos.value);
 });
@@ -103,6 +103,7 @@ console.log("hello2");
 //id, classe, title, startDate, endDate,localisation,typeEvent, description
 
 const { data: courses } = useFetch("https://abe-pingouin.heig-vd.ch/testflo2");
+//gérer bug quand y'a pas de prochaine date
 const { data: allCourses } = useFetch(
   "https://abe-pingouin.heig-vd.ch/horairetoutesclasses"
 );
@@ -236,7 +237,7 @@ function closeInfos() {
       typeEvent="firstCourse"
       sizeFont="1.5"
     ></a-period>
-    <div class="historique" v-if="page=='planning'">
+    <div class="historique" v-if="page=='planning' || page=='home'">
       <a-button-checked
         baseColor="transparent"
         hoverColor="grey"

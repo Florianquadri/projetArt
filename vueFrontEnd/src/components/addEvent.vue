@@ -234,16 +234,16 @@ function validateAddTask() {
       fin: endTaskISO8601.value,
       localisation: localisation.value,
       description: description.value,
-      myClass: forWhichClassEvent.value,
+      classe: forWhichClassEvent.value,
       typeEvent: event.value,
     };
 
     //fetch post envoi des datas au back-end
 
-    /*     fetch('http://127.0.0.1:8000/api/taches', {
+         fetch('http://https://abe-pingouin.heig-vd.ch/api/taches', {
             method:POST,
             body:JSON.stringify(datasForLaravel)
-    }) */
+    }) 
 
     console.log(datasForLaravel);
     emits("closeAddTask", isFinished.value);
