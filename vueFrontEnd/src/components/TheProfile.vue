@@ -66,6 +66,11 @@ const { data: courses } = useFetch(apiHoraireBase);
                   <h4>Prenom :</h4>
                   <p>{{userPrenom}}</p>
                   </span>
+
+                  <span class="details">
+                  <h4>Classe :</h4>
+                  <p>{{userClass}}</p>
+                  </span>
                  
                                                 
                 </div>

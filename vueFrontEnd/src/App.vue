@@ -30,16 +30,47 @@ watchEffect(() => {
 
 const {data: userInfo} = useFetch('/user/info')
 watchEffect(() => {
- 
+   
+   if (user.value == "student") {
     userClass.value = userInfo.value.classe
-    console.log("Userclass.value", userClass.value, );
+    console.log("userPrenom.value", userClass.value, );
     userPrenom.value = userInfo.value.prenom
     console.log("userPrenom.value", userPrenom.value, );
     userNom.value = userInfo.value.nom
-
     console.log("userNom.value", userNom.value, );
+    
+  } else if (user.value== "teacher") {
+    userClass.value = "Pas de classe"
+    console.log("userPrenom.value", userClass.value, );
+    userPrenom.value = userInfo.value.prenom
+    console.log("userPrenom.value", userPrenom.value, );
+    userNom.value = userInfo.value.nom
+    console.log("userNom.value", userNom.value, );
+
+  } else {
+    userClass.value = "Pas de classe"
+  }
    })
 
+
+/* const {data: userInfoClasse} = useFetch('/user/info')
+watchEffect(() => {
+  if (userRole.value == "student") {
+    userClass.value = userInfo.value.classe
+    
+  } else if (userRole.value== "teacher") {
+    userClass.value = "Pas de classe"
+  } else {
+    userClass.value = "Pas de classe"
+  }
+  
+  console.log("userClass.value", userClass.value, )
+})
+
+    userPrenom.value = userInfo.value.prenom
+    console.log("userPrenom.value", userPrenom.value, );
+    userNom.value = userInfo.value.nom
+    console.log("userNom.value", userNom.value, ); */
 </script>
 
 <template>
