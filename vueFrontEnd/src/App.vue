@@ -13,8 +13,10 @@ import "/node_modules/vue-simple-calendar/dist/style.css";
 /* import 'https://fonts.googleapis.com/css2?family=Material+Icons';
 import 'https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;700&display=swap'; */
 import { MDCRipple } from '@material/ripple';
-import {user, userClass, userPrenom, userNom } from "./state.js";
+import {user, userPrenom, userNom , userClass} from "./state.js";
 
+
+//fetch du role de l'user pour determiner le type
 const {data: userRole} = useFetch('/user/role')
 watchEffect(console.log(userRole.value, "userRole"))
 watchEffect(() => {
@@ -28,12 +30,12 @@ watchEffect(() => {
   console.log("user.value", user.value, );
 })
 
+//fetch info user pour avoir classe nom prenom
 const {data: userInfo} = useFetch('/user/info')
 watchEffect(() => {
-   
    if (user.value == "student") {
     userClass.value = userInfo.value.classe
-    console.log("userPrenom.value", userClass.value, );
+    console.log("userClass.value", userClass.value, );
     userPrenom.value = userInfo.value.prenom
     console.log("userPrenom.value", userPrenom.value, );
     userNom.value = userInfo.value.nom
