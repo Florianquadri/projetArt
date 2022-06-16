@@ -148,9 +148,6 @@ function hideContainer(event) {
   background-color: #6ba2ff;
 }
 
-.add:hover {
-  /*     background-color: #60E1E0; */
-}
 
 .mdc-fab__icon {
   color: white;

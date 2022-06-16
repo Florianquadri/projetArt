@@ -80,10 +80,7 @@ watchEffect(() => {
     @include fab.core-styles;
  -->
 
-    <head>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    </head>
-
+  
     <div class="app">
         <the-header></the-header>
         <div class="body">
@@ -110,10 +107,10 @@ watchEffect(() => {
 .body {
     display: flex;
     flex-direction: column;
-    margin-top: 70px;
     background-color: black;
             flex-basis:auto;
-    padding: 10px;
+    padding-right: 10px;
+    padding-left: 10px;
     height: 100%;
 }
 @media(min-width:769px) {

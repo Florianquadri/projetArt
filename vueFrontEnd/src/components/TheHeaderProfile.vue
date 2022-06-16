@@ -4,6 +4,8 @@ import TheProfile from "./TheProfile.vue";
 import TheSelection from "./TheSelection.vue";
 import { user } from "../state.js";
 import aButtonMenuTask from "./aButtonMenuTask.vue";
+import { showContainerHoraire } from "../state.js";
+
 
 const props = defineProps({
   show: {

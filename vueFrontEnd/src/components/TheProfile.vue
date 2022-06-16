@@ -5,7 +5,10 @@ import TheHeaderProfile from "./TheHeaderProfile.vue";
 import { useFetch } from "../composables/fetch.js";
 import { apiHoraireBase } from "../config/horaires.js";
 import aButtonChecked from "./aButtonChecked.vue";
+
+
 import {user, userClass, userPrenom, userNom } from "../state.js";
+
 
 const firstLetterName = ref("F");
 const profileIsClicked = ref(false);

@@ -12,6 +12,7 @@ import { myClass } from "../state.js";
 import { user, URLToFetch } from "../state.js";
 import TheNextEvent from "./TheNextEvent.vue";
 import "/node_modules/vue-simple-calendar/dist/style.css";
+
 import { CalendarView, CalendarViewHeader } from "vue-simple-calendar";
 import aButtonChecked from "./aButtonChecked.vue";
 
@@ -104,6 +105,7 @@ const { data: courses } = useFetchReactive(urlFinale);
 const { data: allCourses } = useFetch(
   "https://abe-pingouin.heig-vd.ch/horairetoutesclasses"
 );
+
 const isClicked = ref(false);
 const eventPopUp = ref("");
 const eventClick = ref("");
@@ -210,7 +212,7 @@ function closeInfos() {
 </script>
 //v-if="user=='teacher'" --> pour la sélection de cours
 <template>
-  <div class="containerHoraire">
+
     <h1 class="white" v-if="!onlyFuturEvent[0]">Mon planning</h1>
     <h2 v-if="onlyFuturEvent[0]">Prochain event</h2>
     <a-period
@@ -235,6 +237,25 @@ function closeInfos() {
         @isClicked="toggleHistorique($event)"
       ></a-button-checked>
       <span class="white">Voir l'historique</span>
+
+        </template>
+        <template class="div_calendar" v-if="page == 'mois'" id="app">
+            <h2>Mon calendrier</h2>
+            <calendar-view :items="items" startingDayOfWeek="1" :show-date="showDate" @click-date="test($event)"
+                @click-item="test2($event)" class="theme-default holiday-us-traditional holiday-us-official">
+                <template #header="{ headerProps }">
+                    <calendar-view-header :header-props="headerProps" @input="setShowDate" />
+                </template>
+            </calendar-view>
+            <div class="moreInfo" :class="isClicked ? 'active' : ''">
+            <span class="bar" @click="closeInfos"></span>
+                <div v-for="itemPopUp in tabFiltreEvent" :key="itemPopUp.id" class="event">
+               <event-monthly :startDate="itemPopUp.startDate" :endDate="itemPopUp.endDate" :title="itemPopUp.title" :room="itemPopUp.room"></event-monthly>
+                </div>
+            </div>
+        </template>
+
+
     </div>
     <template v-if="page == 'planning' || page == 'home'">
       <ul>

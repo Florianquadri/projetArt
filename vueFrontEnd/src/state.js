@@ -19,9 +19,7 @@ export const myClass = ref("IM49-1");
 
 export const typeOfAddTask = ref(null);
 
-export const classOuPrivateToFetch = ref("yourPlanning");
 
-export const URLToFetch = ref("");
 
 //student, teacher or secretary ou anonymous
 
@@ -29,5 +27,7 @@ export const user2 = ref(null);
 export const userPrenom= ref(null);
 export const userClass = ref(null);
 export const userNom = ref(null);
+
+
 
 
