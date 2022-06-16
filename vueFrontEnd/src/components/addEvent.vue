@@ -240,7 +240,7 @@ function validateAddTask() {
 
     //fetch post envoi des datas au back-end
 
-         fetch('https://abe-pingouin.heig-vd.ch/api/taches', {
+         fetch('https://abe-pingouin.heig-vd.ch/taches', {
             method:"POST",
             body:JSON.stringify(datasForLaravel)
     }) 

@@ -23,7 +23,7 @@ const { data: courses } = useFetch(apiHoraireBase);
       <div>
         <div class = 'img' v-if="user == 'anonymous'">
           
-         <a href="/api/login">
+         <a href="/login">
           <img
           src="../assets/Property1OFFPPic.png"
           alt="ProfilePic"/>

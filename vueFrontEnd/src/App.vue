@@ -15,7 +15,7 @@ import 'https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;700
 import { MDCRipple } from '@material/ripple';
 import {user, userClass, userPrenom, userNom } from "./state.js";
 
-const {data: userRole} = useFetch('/api/user/role')
+const {data: userRole} = useFetch('/user/role')
 watchEffect(console.log(userRole.value, "userRole"))
 watchEffect(() => {
   if (userRole.value == "student") {
@@ -28,7 +28,7 @@ watchEffect(() => {
   console.log("user.value", user.value, );
 })
 
-/* const {data: userInfo} = useFetch('/api/user/info')
+const {data: userInfo} = useFetch('/user/info')
 watchEffect(() => {
  
     userClass.value = userInfo.value.classe
@@ -38,7 +38,7 @@ watchEffect(() => {
     userNom.value = userInfo.value.nom
 
     console.log("userNom.value", userNom.value, );
-   }) */
+   })
 
 </script>
 
