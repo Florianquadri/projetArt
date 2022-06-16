@@ -270,7 +270,7 @@ a {
   gap: 10%;
   position: fixed;
   left: -100%;
-  top: 71px;
+  top: 70px;
   height: 100%;
   gap: 0;
   flex-direction: column;
@@ -283,6 +283,7 @@ a {
   padding-right: 30px;
   transition: 0.3s;
   border-right: 0px solid black;
+ 
 }
 
 .nav-item {
@@ -336,6 +337,7 @@ a {
     padding-right: 15px;
     transition: 0.3s;
     z-index: 4;
+    
   }
 
   /*     .nav-menu.active {

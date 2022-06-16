@@ -295,7 +295,7 @@ li {
 div.popUpProfile {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   position: fixed;
-  top: -100vh;
+  top: -350vh;
   left: 0;
   display: flex;
   flex-direction: column;
@@ -314,7 +314,7 @@ div.popUpProfile {
 div.popUpProfile.active {
   z-index: 1000;
   bottom: 0px;
-  background-color: #606060;
+  background-color: #121418;
   border-top: 1px solid #e7f0ff;
   opacity: 1;
   height: 100%;
