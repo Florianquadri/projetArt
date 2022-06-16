@@ -14,8 +14,7 @@ import "/node_modules/vue-simple-calendar/dist/style.css";
 import 'https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;700&display=swap'; */
 import { MDCRipple } from '@material/ripple';
 import {user, userClass, userPrenom, userNom } from "./state.js";
-/* const {data: userRole} = useFetch('/api/user/role')
-watchEffect(console.log(userRole.value, "userRole")) */
+
 const {data: userRole} = useFetch('/api/user/role')
 watchEffect(console.log(userRole.value, "userRole"))
 watchEffect(() => {
@@ -28,6 +27,7 @@ watchEffect(() => {
   }
   console.log("user.value", user.value, );
 })
+
 /* const {data: userInfo} = useFetch('/api/user/info')
 watchEffect(() => {
  
@@ -36,8 +36,10 @@ watchEffect(() => {
     userPrenom.value = userInfo.value.prenom
     console.log("userPrenom.value", userPrenom.value, );
     userNom.value = userInfo.value.nom
+
     console.log("userNom.value", userNom.value, );
    }) */
+
 </script>
 
 <template>

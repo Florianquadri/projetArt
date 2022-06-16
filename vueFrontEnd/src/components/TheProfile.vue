@@ -23,7 +23,7 @@ const { data: courses } = useFetch(apiHoraireBase);
       <div>
         <div class = 'img' v-if="user == 'anonymous'">
           
-         <a href="https://abe-pingouin.heig-vd.ch/login">
+         <a href="/api/login">
           <img
           src="../assets/Property1OFFPPic.png"
           alt="ProfilePic"/>
