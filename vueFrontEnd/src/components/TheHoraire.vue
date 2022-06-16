@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, watchEffect } from "vue";
+import { ref, computed, watchEffect, watch } from "vue";
 import { useFetch } from "../composables/fetch.js";
 import { apiHoraireBase, baseURL } from "../config/horaires.js";
 import { apiHoraireBasique } from "../config/horaires.js";
@@ -119,6 +119,10 @@ const tabClasses = computed(() => {
     return [];
   }
 });
+
+watchEffect(() => {
+  console.log(tabClasses.value)
+})
 
 const onlyFuturEvent = computed(() => {
   if (courses.value?.length > 0) {
