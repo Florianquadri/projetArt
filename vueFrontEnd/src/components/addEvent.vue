@@ -230,8 +230,8 @@ function validateAddTask() {
   if (!isThereErrors.value) {
     const datasForLaravel = {
       titre: intitule.value,
-/*       debut: beginningTaskISO8601.value,
-      fin: endTaskISO8601.value, */
+      debut: beginningTaskISO8601.value,
+      fin: endTaskISO8601.value,
       localisation: localisation.value,
       description: description.value,
       classe: forWhichClassEvent.value,
