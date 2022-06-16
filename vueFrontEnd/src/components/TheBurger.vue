@@ -140,9 +140,9 @@ function redirigeSurPage(pageEnvoyee) {
           <a-button-checked
             baseColor="transparent"
             hoverColor="grey"
-            selectedColor="#FFE438"
-            baseBorderColor="#FFE438"
-            selectedBorderColor="#FFE438"
+            selectedColor="#FF8935"
+            baseBorderColor="#FF8935"
+            selectedBorderColor="#FF8935"
             value="event"
             @isClicked="eventChecked = $event"
           >

@@ -99,20 +99,18 @@ const whichColorBackground = computed(() => day == dateCours.value && moisCours.
 
 const whatTypeEvent = computed(() => {
   if (props.typeEvent == "test") return "#F94040";
-  if (props.typeEvent == "perso") return "#FF8127";
+  if (props.typeEvent == "event") return "#FF8935";
   if (props.typeEvent == "course") return "#84F4BF";
-  if (props.typeEvent == "devoir") return "#A18AFF";
-  if (props.typeEvent == "académique") return "#FFE438";
+  if (props.typeEvent == "devoir") return "#1D4EFF";
   if (props.typeEvent == "firstCourse") return "#262626";
   return "#84F4BF";
 });
 
 const whichColorFont = computed(() => {
   if (props.typeEvent == "test") return "white";
-  if (props.typeEvent == "perso") return "white";
+  if (props.typeEvent == "event") return "white";
   if (props.typeEvent == "course") return "#262626";
-  if (props.typeEvent == "devoir") return "#262626";
-  if (props.typeEvent == "académique") return "#262626";
+  if (props.typeEvent == "devoir") return "white";
   if (props.typeEvent == "firstCourse") return "white";
   return "#84F4BF";
 });
