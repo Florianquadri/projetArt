@@ -19,7 +19,7 @@ export const myClass = ref("IM49-1");
 
 export const typeOfAddTask = ref(null);
 
-export const classOuPrivateToFetch = ref("privsdf");
+export const classOuPrivateToFetch = ref("private");
 
 //student, teacher or secretary ou anonymous
 
