@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed, watchEffect, watch } from "vue";
-import { useFetch } from "../composables/fetch.js";
+import { useFetch, useFetchReactive } from "../composables/fetch.js";
 import { apiHoraireBase, baseURL } from "../config/horaires.js";
 import { apiHoraireBasique } from "../config/horaires.js";
 import ACourse from "./ACourse.vue";
@@ -106,7 +106,11 @@ console.log("hello2");
 //le fetch = les cases sélectionnées --> fetch réactif (cours, tâches, event, devoir)
 //id, classe, title, startDate, endDate,localisation,typeEvent, description
 
-const { data: courses } = useFetch(urlFinale.value);
+//censé être réactif --> dans un watch effect ?
+
+const { data: courses } = useFetchReactive(urlFinale);
+
+
 //gérer bug quand y'a pas de prochaine date
 const { data: allCourses } = useFetch(
   "https://abe-pingouin.heig-vd.ch/horairetoutesclasses"
