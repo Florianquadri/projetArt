@@ -9,7 +9,7 @@ import TheSelection from "./TheSelection.vue";
 import EventMonthly from "./EventMonthly.vue";
 import { page, urlFinale } from "../state.js";
 import { myClass } from "../state.js";
-import { user } from "../state.js";
+import { user, URLToFetch } from "../state.js";
 import TheNextEvent from "./TheNextEvent.vue";
 import "/node_modules/vue-simple-calendar/dist/style.css";
 import { CalendarView, CalendarViewHeader } from "vue-simple-calendar";
@@ -86,6 +86,9 @@ const urlFinale = computed(() => {
   );
 });
 
+watchEffect(() => {
+  URLToFetch.value = urlFinale.value;
+})
 const urlAFetch = ref(null);
 const fetchClass = ref(false);
 

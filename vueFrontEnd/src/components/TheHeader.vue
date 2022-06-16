@@ -3,12 +3,12 @@ import { ref, computed, watchEffect } from 'vue';
 import TheBurger from './TheBurger.vue';
 import TheProfile from './TheProfile.vue';
 import TheSelection from './TheSelection.vue';
-import { user } from "../state.js";
+import { user, URLToFetch } from "../state.js";
 import { useFetch } from '../composables/fetch.js';
 import { apiHoraireBase } from "../config/horaires.js"
 import { myClass, urlFinale } from "../state.js";
 
-const { data: allCourses } = useFetch(urlFinale.value);
+const { data: allCourses } = useFetch(URLToFetch.value);
 
 const tabClasses = computed(() => {
     if (allCourses.value?.length > 0) {

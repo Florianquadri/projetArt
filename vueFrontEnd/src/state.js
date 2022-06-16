@@ -21,7 +21,7 @@ export const typeOfAddTask = ref(null);
 
 export const classOuPrivateToFetch = ref("yourPlanning");
 
-export const urlFinale = ref("");
+export const URLToFetch = ref("");
 
 //student, teacher or secretary ou anonymous
 
