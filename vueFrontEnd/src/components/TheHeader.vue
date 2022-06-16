@@ -8,7 +8,7 @@ import { useFetch } from '../composables/fetch.js';
 import { apiHoraireBase } from "../config/horaires.js"
 import { myClass, urlFinale } from "../state.js";
 
-const { data: courses } = useFetch(urlFinale.value);
+const { data: allCourses } = useFetch(urlFinale.value);
 
 const tabClasses = computed(() => {
     if (allCourses.value?.length > 0) {
