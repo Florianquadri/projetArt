@@ -12,7 +12,7 @@ const { data: allCourses } = useFetch("https://abe-pingouin.heig-vd.ch/horaireto
 
 const tabClasses = computed(() => {
     if (allCourses.value?.length > 0) {
-        return Array.from(new Set(allCourses.value.map(d => d.class)));
+        return Array.from(new Set(allCourses.value.map(d => d.classe)));
     } else {
         return [];
     }
